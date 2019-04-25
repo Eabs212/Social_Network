@@ -19,8 +19,8 @@ public class PostModel {
 	private String postText, url;
 	private Timestamp creationTime;
 	private UserModel user;
-	private ArrayList<CommentModel> comments = new ArrayList<>();
-	private ArrayList<LikeModel> likes = new ArrayList<>();
+	private ArrayList<CommentModel> comments ;
+	private ArrayList<LikeModel> likes ;
   
       public void setData(ResultSet rs) throws SQLException{
                 this.setIdPost(rs.getInt(1));

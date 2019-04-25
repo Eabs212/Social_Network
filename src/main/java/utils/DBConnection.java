@@ -32,7 +32,7 @@ public class DBConnection {
 	}
 	
   //Select simples para comprobaciones
-  public ResultSet execute(String query, Object... values) {
+  public  ResultSet execute(String query, Object... values) {
     try {
       this.pstm = this.con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       for (int i = 0; i < values.length; i++) {

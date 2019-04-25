@@ -5,8 +5,6 @@
  */
 package handlers;
 
-import Models.CommentModel;
-import Models.LikeModel;
 import Models.PostModel;
 import Models.ResponseModel;
 import Models.UserModel;
@@ -37,11 +35,13 @@ public class PostHandler {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
-        String resp="";
+        ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
         Integer id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         Integer postsCount = Integer.parseInt(request.getParameter("posts"));
         String username = request.getSession(false).getAttribute("user").toString();
+        CommentHandler comments = new CommentHandler();  
+        LikeHandler likes = new  LikeHandler();
+        String resp="";        
         try {
           rs = db.execute(prpReader.getValue("getPosts"), id, id, postsCount);
             while (rs.next()) {
@@ -54,8 +54,8 @@ public class PostHandler {
                 user.setLastName(rs.getString(8));
                 user.setAvatar(rs.getString(9));
                 user.setId(rs.getInt(10));
-                post.setLikes(getLikes(post.getIdPost()));
-                post.setComments(getComments(post.getIdPost()));
+                post.setLikes(likes.getLikes(post.getIdPost()));
+                post.setComments(comments.getComments(post.getIdPost()));
                 post.setUser(user);
                 posts.add(post);
             }
@@ -68,7 +68,7 @@ public class PostHandler {
             msgToUser.setStatus(500);
         }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);
+        resp = jackson.plainObjToJson(msgToUser);        
         return resp;
     }
 
@@ -79,6 +79,7 @@ public class PostHandler {
         PostModel post = jackson.jsonToPlainObj(request, PostModel.class);
         UserModel user = new UserModel();
         user.setId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
+        //user.setId(Integer.parseInt(request.getParameter("user_id").toString()));
         post.setUser(user);        
         ResponseModel msgToUser = new ResponseModel();
         String resp="";
@@ -98,12 +99,15 @@ public class PostHandler {
         return resp;
     }
     public String getUserPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
+        //ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel<>();        
         ArrayList<PostModel> posts = new ArrayList<>();
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
+        CommentHandler comments = new CommentHandler();
+        LikeHandler likes = new  LikeHandler();        
         Integer userId = Integer.parseInt(request.getParameter("user"));
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
         String resp="";
 
         try {
@@ -112,8 +116,8 @@ public class PostHandler {
             while (rs.next()) {
                 PostModel post = new PostModel();
                 post.setData(rs);
-                post.setLikes(getLikes(post.getIdPost()));
-                post.setComments(getComments(post.getIdPost()));
+                post.setLikes(likes.getLikes(post.getIdPost()));
+                post.setComments(comments.getComments(post.getIdPost()));
                 posts.add(post);
             }
             msgToUser.setData(posts);
@@ -133,7 +137,9 @@ public class PostHandler {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        //Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        Integer userId = Integer.parseInt(request.getParameter("user_id"));
+
         Integer postId = Integer.parseInt(request.getParameter("id"));
         ResponseModel msgToUser = new ResponseModel();
         String resp="";
@@ -163,55 +169,5 @@ public class PostHandler {
         }
         return count;
     }
-    public ArrayList<LikeModel> getLikes(int post_id) throws SQLException, JsonProcessingException, IOException {
-        ArrayList<LikeModel> likes = new ArrayList<>();
-        prpReader = PropReader.getInstance();
-        db = new DBConnection();
-        try {
-          System.out.println(post_id);          
-          rs = db.execute(prpReader.getValue("getLikes"), post_id);
-            while(rs.next()) {
-                UserModel user = new UserModel();
-                LikeModel like = new LikeModel();
-                like.setData(rs);
-                          System.out.println(rs.toString()+" 1");          
-                          System.out.println("putras");          
 
-                user.setId(like.getUserId());
-                user.setUsername(rs.getString(4));
-                user.setName(rs.getString(5));
-                user.setLastName(rs.getString(6));
-                like.setUser(user);
-                likes.add(like);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return likes;
-    }
-    public ArrayList<CommentModel> getComments(int post_id) throws SQLException, JsonProcessingException, IOException {
-        ArrayList<CommentModel> comments = new ArrayList<>();        
-        prpReader = PropReader.getInstance();
-        db = new DBConnection();
-        try {
-          System.out.println(post_id);
-            rs = db.execute(prpReader.getValue("getComments"), post_id);
-            while(rs.next()) {
-                CommentModel comment = new CommentModel();
-                UserModel user = new UserModel();
-                comment.setData(rs);
-                user.setUsername(rs.getString(5));
-                user.setName(rs.getString(6));
-                user.setLastName(rs.getString(7));
-                comment.setUser(user);
-                comments.add(comment);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        db.closeCon();
-        return comments; 
-    }
 }

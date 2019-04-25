@@ -7,10 +7,12 @@ package handlers;
 
 import Models.LikeModel;
 import Models.ResponseModel;
+import Models.UserModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import utils.DBConnection;
 import utils.PropReader;
@@ -36,11 +38,12 @@ public class LikeHandler {
     String resp = "";    
 		try {
       rs = db.execute(prpReader.getValue("insertLike"), like.getUserId(), like.getPostId(), like.getTypeLikeId());
+                if(rs.next()){
 			like.setData(rs);
 			msgToUser.setStatus(200);
 			msgToUser.setMessage("Post Liked");
 			msgToUser.setData(like);
-
+                }
 		} catch (SQLException e) {
 			e.printStackTrace();
 			msgToUser.setStatus(500);
@@ -96,5 +99,30 @@ public class LikeHandler {
     return resp;
 	}
 
-  
+      public ArrayList<LikeModel> getLikes(int post_id) throws SQLException, JsonProcessingException, IOException {
+        ArrayList<LikeModel> likes = new ArrayList<>();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        try {
+          System.out.println(post_id);          
+          rs = db.execute(prpReader.getValue("getLikes"), post_id);
+            while(rs.next()) {
+                UserModel user = new UserModel();
+                LikeModel like = new LikeModel();
+                like.setData(rs);
+                System.out.println(rs.toString()+" 1");          
+                          System.out.println("putras");          
+
+                user.setId(like.getUserId());
+                user.setUsername(rs.getString(4));
+                user.setName(rs.getString(5));
+                user.setLastName(rs.getString(6));
+                like.setUser(user);
+                likes.add(like);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return likes;
+    }
 }
