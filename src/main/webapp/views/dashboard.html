@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <!--Import Google Icon Font-->
+    <link type="text/css" href="../css/material-icons.css" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  </head>
+
+  <body class="black">
+    <nav>
+      <div class="nav-wrapper grey darken-4">
+        <a href="./../views/dashboard.html" class="brand-logo left">
+            <i class="material-icons">home</i>SocialFire</a>
+            <ul id="nav-mobile" class="right">
+                  <li><a id="username" class=" waves-effect waves-light btn red darken-3" href="./../views/profile.html"><i class="material-icons left">account_circle</i>user</a></li>
+                  <li><a id="out" onclick="out()" class="waves-effect waves-light btn red darken-3"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
+                </ul>
+      </div>
+    </nav>
+      <div class="container-fluid" style="max-height: 100vh;">
+        <div class="row" style="margin: 0px">
+          <div class="col s3 white" style="max-height: 100vh;">
+              <div id="myPost" class="grey darken-4 white-text" style="border: 1px solid #212121 ;border-radius: 10px;height: 40vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                    <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="80%" style="margin-left:10% ">
+                    <p id="name" style="font-size: 24px;margin: 2%"></p>                      
+                  </div>
+                  <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:55vh;overflow: auto;height: 55vh;">
+                    <div class="collection "style="border: 1px solid #212121 ;border-radius: 10px;height: 28vh;margin-top:20%">
+                      <a href="search.html" class="collection-item grey-text text-darken-4"></span>buscar</a>
+                      <a href="#!" class="collection-item grey-text text-darken-4"><span class="new badge"></span>notificaciones</a>
+                      <a href="friends.html" class="collection-item grey-text text-darken-4">amigos</a>
+                      <a href="edit.html" class="collection-item grey-text text-darken-4" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">configuracion</a>
+                    </div>
+                    </div>    
+          </div>
+            <div class="col s9 red" style="max-height:100vh">
+                <div id="myPost" class="input-field" style="border: 1px solid #212121 ;border-radius: 10px;height: 28vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                    <div style="display:flex;height: 70%;">
+                      <div style="width: 12%;height: 30%;">
+                          <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="100%" height="100%">                      
+                      </div>
+                      <div><textarea class="materialize-textarea white" placeholder="que pensais mije" name="" id="" cols="30" rows="10" style="width: 60vw;margin-left: 2%;overflow: auto;max-height: 15vh;height: 15vh;border: 1px solid #212121; border-radius: 10px; color: black"></textarea>
+                      </div>
+                    </div>
+                    <div class="divider grey darken-4"></div>
+                    <form action="#">
+                        <div class="file-field">
+                          <div class="btn-small grey darken-4 center" style="margin: 0.5%; ">
+                            <span>img</span>
+                            <input type="file" multiple accept="image/*">
+                          </div>
+                        </div>
+                        <div class="file-field">
+                          <div class="btn-small grey darken-4"  style="margin: 0.5%">
+                              <span>audio</span>
+                              <input type="file" accept="audio/*">
+                            </div>
+                        </div>
+                        <div class="file-field">
+                          <div class="btn-small grey darken-4" style="margin: 0.5%">
+                              <span>video</span>
+                              <input type="file" accept="video/*">
+                            </div>
+                        </div>
+                      </form>
+                      <a href="" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+                </div>
+                <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">
+
+<!--                     <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                        <div style="display:flex">
+                            <div style="width: 12%;height: 30%;">
+                                <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="90%" height="80%">
+                                <p>hace mucho tiempo</p>                      
+                            </div>
+                            <div >
+                              <div style="display:flex">
+                                <h5 class="user">emlio</h5><span style="padding-top: 22%;">@eas</span>
+                              </div>
+                              <p>asdasd</p>
+
+                            </div>
+                        </div>
+                        <div class="divider grey darken-4"></div>
+                        <div style="margin: 1%">
+                          <img src="avatar.png" alt="asd" width="20%" height="30%" style="margin-left:40%">
+                        </div>
+                        <div class="divider grey darken-4" style="margin-bottom: 1%"></div>
+                          <a href="" class="btn grey darken-4 " style="width: 50%;">like</a>
+                          <a href="" class="btn right grey darken-4" style="width: 50%;">comments</a>
+                    </div>
+
+                    <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                        <div>
+                            <img src="avatar.png" alt="" class="responsive-img circle" width="10%" height="10%">
+                            <div style="display: inline-flex; height: 10%;"><p>asdasd</p></div>
+                            <p>hace mucho tiempo</p>
+                        </div>
+                        <div class="divider grey darken-4"></div>
+                        <div style="margin: 1%;align-content: center">
+                          <audio src="test.mp3"style="margin-left:25%;width:50%"  controls></audio>
+                        </div>
+                        <div class="divider grey darken-4" style="margin-bottom: 1%"></div>
+                          <a href="" class="btn grey darken-4 " style="width: 50%;">like</a>
+                          <a href="" class="btn right grey darken-4" style="width: 50%;">comments</a>
+                    </div>
+                    <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                        <div>
+                            <img src="avatar.png" alt="" class="responsive-img circle" width="10%" height="10%">
+                            <div style="display: inline-flex; height: 10%;"><p>asdasd</p></div>
+                            <p>hace mucho tiempo</p>
+                        </div>
+                        <div class="divider grey darken-4"></div>
+                        <div style="margin: 1%">
+                            <video class="responsive-video" width="55%" height="65%" style="margin-left:25%" controls>
+                                <source src="O_P 001.mp4" type="video/mp4">
+                              </video>                        
+                            </div>
+                        <div class="divider grey darken-4" style="margin-bottom: 1%"></div>
+                          <a href="" class="btn grey darken-4 " style="width: 50%;">like</a>
+                          <a href="" class="btn right grey darken-4" style="width: 50%;">comments</a>
+                    </div>   -->                  
+              
+                                       
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+    <script type="text/javascript" src="../js/dashboard.js"></script>
+  </body>
+</html>                              
