@@ -32,11 +32,8 @@ public class LikeHandler {
     jackson = new SuperMapper();
     prpReader = PropReader.getInstance();
     db = new DBConnection();
-		LikeModel like = new LikeModel();
-    like.setPostId(Integer.parseInt(request.getParameter("post_id")));
-    like.setTypeLikeId(Integer.parseInt(request.getParameter("like_type")));
+		LikeModel like = jackson.jsonToPlainObj(request, LikeModel.class);
 		like.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-    System.out.println(like.getPostId()+" "+like.getUserId()+" "+like.getTypeLikeId());
     ResponseModel msgToUser = new ResponseModel();
     String resp = "";    
 		try {
@@ -112,7 +109,9 @@ public class LikeHandler {
             while(rs.next()) {
                 UserModel user = new UserModel();
                 LikeModel like = new LikeModel();
-                like.setData(rs);          
+                like.setData(rs);
+                System.out.println(rs.toString()+" 1");          
+                          System.out.println("putras");          
 
                 user.setId(like.getUserId());
                 user.setUsername(rs.getString(4));

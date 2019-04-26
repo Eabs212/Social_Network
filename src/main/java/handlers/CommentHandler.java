@@ -32,9 +32,8 @@ public class CommentHandler {
     prpReader = PropReader.getInstance();
     db = new DBConnection();
     CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
-    //comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
+    comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
     ResponseModel msgToUser = new ResponseModel();
-    System.out.println(comment.getCommentText()+" "+comment.getCommentUrl()+" "+comment.getPostId()+" "+comment.getUserId());
     String resp = "";
     try {
       db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getCommentUrl(), comment.getPostId(), comment.getUserId());
