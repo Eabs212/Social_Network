@@ -15,7 +15,7 @@
     </style>
   </head>
 
-  <body class="black">
+  <body class="red">
     <nav>
       <div class="nav-wrapper grey darken-4">
         <a href="./../views/dashboard.html" class="brand-logo left">
@@ -26,10 +26,11 @@
                 </ul>
       </div>
     </nav>
-      <div class="container-fluid" style="max-height: 100vh;">
+      <div class="container-fluid" style="max-height: 104vh;">
         <div class="row" style="margin: 0px">
-          <div class="col s3 red" style="max-height: 100vh;">
-              <div id="myPost" class="grey darken-4 white-text" style="border: 1px solid #212121 ;border-radius: 10px;height: 40vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+
+          <div class="col s3 red" style="max-height: 104vh;">
+              <div id="myPost" class="grey darken-4 white-text" style="border: 1px solid #212121 ;border-radius: 10px;height: 44vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
                     <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="80%" style="margin-left:10% ">
                     <p id="name" style="font-size: 24px;margin: 2%"></p>                      
                   </div>
@@ -42,16 +43,74 @@
                     </div>
                     </div>    
           </div>
-            <div class="col s9 red" style="max-height:100vh">
-                <div id="myPost" class="input-field" style="border: 1px solid #212121 ;border-radius: 10px;height: 28vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
-                    <div style="display:flex;height: 70%;">
-                      <div style="width: 12%;height: 30%;">
-                          <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="100%" height="100%">                      
+            <div class="col s9 red" style="max-height:104vh">
+                <div id="myPost" class="input-field" style="border: 1px solid #212121 ;border-radius: 10px;height: 32vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                    <div class="row">
+                        <div class="col s12">
+                          <ul class="tabs grey darken-4">
+                            <li class="tab col s3"><a href="#test1">Photo post</a></li>
+                            <li class="tab col s3"><a class="active" href="#test2">Text post</a></li>
+                            <li class="tab col s3"><a href="#test3">video post</a></li>
+                            <li class="tab col s3"><a href="#test4">audio post</a></li>
+                          </ul>
+                        </div>
+                        <div id="test1" class="col s12">
+                            <form action="#">
+                                <div class="file-field input-field">
+                                  <div class="btn grey darken-4">
+                                    <span>File</span>
+                                    <input type="file" multiple accept="images/*">
+                                  </div>
+                                  <div class="file-path-wrapper">
+                                    <input class="file-path validate white" type="text" placeholder="Upload one or more files">
+                                  </div>
+                                </div>
+                              </form>
+                              <a href="" id="sendImg" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+
+                        </div>
+                        <div id="test2" class="col s12">
+                            <div style="display:flex;height: 90%;">
+                                <div style="width: 12%;height: 30%;">
+                                    <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="100%" height="100%">                      
+                                </div>
+                                <div><textarea class="materialize-textarea white" placeholder="publica algo" name="" id="text-post" cols="30" rows="10" style="width: 60vw;margin-left: 2%;overflow: auto;height: 80px;border: 1px solid #212121; border-radius: 10px; color: black"></textarea>
+                                </div>
+                              </div>
+                              <a href="" id="send" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+                        </div>
+                        <div id="test3" class="col s12">
+                            <form action="#">
+                                <div class="file-field input-field">
+                                  <div class="btn grey darken-4">
+                                    <span>File</span>
+                                    <input type="file" multiple accept="video/*">
+                                  </div>
+                                  <div class="file-path-wrapper">
+                                    <input class="file-path validate white" type="text" placeholder="Upload one or more files">
+                                  </div>
+                                </div>
+                              </form>
+                              <a href="" id="sendVideo" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+
+                        </div>
+                        <div id="test4" class="col s12">
+                            <form action="#">
+                                <div class="file-field input-field">
+                                  <div class="btn grey darken-4">
+                                    <span>File</span>
+                                    <input type="file" multiple accept="audio/*">
+                                  </div>
+                                  <div class="file-path-wrapper">
+                                    <input class="file-path validate white" type="text" placeholder="Upload one or more files">
+                                  </div>
+                                </div>
+                              </form>
+                              <a href="" id="sendAudio" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+
+                        </div>
                       </div>
-                      <div><textarea class="materialize-textarea white" placeholder="publica algo" name="" id="" cols="30" rows="10" style="width: 60vw;margin-left: 2%;overflow: auto;max-height: 15vh;height: 15vh;border: 1px solid #212121; border-radius: 10px; color: black"></textarea>
-                      </div>
-                    </div>
-                    <div class="divider grey darken-4"></div>
+<!--                     <div class="divider grey darken-4"></div>
                     <form action="#">
                         <div class="file-field">
                           <div class="btn-small grey darken-4 center" style="margin: 0.5%; ">
@@ -71,12 +130,11 @@
                               <input type="file" accept="video/*">
                             </div>
                         </div>
-                      </form>
-                      <a href="" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px">post</a>
+                      </form> -->
                 </div>
-                <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">
-
-<!--                     <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+                <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">
+<!--
+                  <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
                         <div style="display:flex">
                             <div style="width: 12%;height: 30%;">
                                 <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="90%" height="80%">
@@ -95,10 +153,18 @@
                           <img src="avatar.png" alt="asd" width="20%" height="30%" style="margin-left:40%">
                         </div>
                         <div class="divider grey darken-4" style="margin-bottom: 1%"></div>
+                        <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:25vh;overflow: auto;height: 25vh;">
+                            <textarea class="materialize-textarea white" placeholder="comenta algo" name="" id="text-coment" cols="30" rows="10" style="width: 60vw;margin-left: 2%;overflow: auto;height: 60px;border: 1px solid #212121; border-radius: 10px; color: black"></textarea>
+                          <div style="display: flex">
+                            <h6 style="padding-top: .5%;margin-right: 2%;color:white">emilio:</h6>
+                            <p class="white" style="border-radius: 5px;padding: .5%">asda</p>
+
+                          </div>
+                          </div>
                           <a href="" class="btn grey darken-4 " style="width: 50%;">like</a>
                           <a href="" class="btn right grey darken-4" style="width: 50%;">comments</a>
                     </div>
-
+   
                     <div class="input-field red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
                         <div>
                             <img src="avatar.png" alt="" class="responsive-img circle" width="10%" height="10%">
@@ -128,8 +194,8 @@
                         <div class="divider grey darken-4" style="margin-bottom: 1%"></div>
                           <a href="" class="btn grey darken-4 " style="width: 50%;">like</a>
                           <a href="" class="btn right grey darken-4" style="width: 50%;">comments</a>
-                    </div>   -->                  
-              
+                    </div>      
+               -->
                                        
                 </div>
             </div>
@@ -138,5 +204,11 @@
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="../js/materialize.min.js"></script>
     <script type="text/javascript" src="../js/dashboard.js"></script>
+    <script>
+    var el = document.querySelectorAll('.tabs');
+  var instance = M.Tabs.init(el, {});
+ 
+
+    </script>
   </body>
 </html>                              
