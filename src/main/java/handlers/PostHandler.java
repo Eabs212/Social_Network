@@ -10,11 +10,17 @@ import Models.ResponseModel;
 import Models.UserModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import utils.DBConnection;
 import utils.PropReader;
 import utils.SuperMapper;
@@ -23,12 +29,13 @@ import utils.SuperMapper;
  *
  * @author Emilio
  */
+@MultipartConfig
 public class PostHandler {
-  private DBConnection db;
-  private PropReader prpReader;
-  private SuperMapper jackson;
-  private ResultSet rs;
-  
+
+    private DBConnection db;
+    private PropReader prpReader;
+    private SuperMapper jackson;
+    private ResultSet rs;
 
     public String getPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
         ArrayList<PostModel> posts = new ArrayList<>();
@@ -39,16 +46,15 @@ public class PostHandler {
         Integer id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         Integer postsCount = Integer.parseInt(request.getParameter("posts"));
         String username = request.getSession(false).getAttribute("user").toString();
-        CommentHandler comments = new CommentHandler();  
-        LikeHandler likes = new  LikeHandler();
-        String resp="";        
+        CommentHandler comments = new CommentHandler();
+        LikeHandler likes = new LikeHandler();
         try {
-          rs = db.execute(prpReader.getValue("getPosts"), id, id, postsCount);
+            rs = db.execute(prpReader.getValue("getPosts"), id, id, postsCount);
             while (rs.next()) {
                 PostModel post = new PostModel();
                 UserModel user = new UserModel();
                 post.setData(rs);
-                post.setFileCount(getFileCount(username, post.getIdPost()));
+                //post.setFileCount(getFileCount(username, post.getIdPost()));
                 user.setUsername(rs.getString(6));
                 user.setName(rs.getString(7));
                 user.setLastName(rs.getString(8));
@@ -62,17 +68,16 @@ public class PostHandler {
             msgToUser.setData(posts);
             msgToUser.setMessage("Posts Returned");
             msgToUser.setStatus(200);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             msgToUser.setMessage("DB Connection Error");
             msgToUser.setStatus(500);
         }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);        
-        return resp;
+        return jackson.plainObjToJson(msgToUser);
     }
 
-    public String addPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
+    /*public String addPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
@@ -97,21 +102,19 @@ public class PostHandler {
         db.closeCon();
         resp = jackson.plainObjToJson(msgToUser);
         return resp;
-    }
+    }*/
     public String getUserPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
-        //ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel<>();        
         ArrayList<PostModel> posts = new ArrayList<>();
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         CommentHandler comments = new CommentHandler();
-        LikeHandler likes = new  LikeHandler();        
+        LikeHandler likes = new LikeHandler();
         Integer userId = Integer.parseInt(request.getParameter("user"));
         ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
-        String resp="";
 
         try {
-          rs = db.execute(prpReader.getValue("getUserPosts"), userId);
+            rs = db.execute(prpReader.getValue("getUserPosts"), userId);
 
             while (rs.next()) {
                 PostModel post = new PostModel();
@@ -130,9 +133,102 @@ public class PostHandler {
             msgToUser.setStatus(500);
         }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);
-        return resp;        
+        return jackson.plainObjToJson(msgToUser);
     }
+//REVISAR BIEN LA RUTA
+
+    public String addPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException, ServletException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        PostModel post = jackson.jsonToPlainObj(request, PostModel.class);
+        UserModel user = new UserModel();
+        user.setId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
+        String user_username = request.getSession(false).getAttribute("user").toString();
+        //user.setId(Integer.parseInt(request.getParameter("user_id").toString()));
+        post.setUser(user);
+        ResponseModel msgToUser = new ResponseModel();
+        if (user_username.trim() != null) {
+            Integer option = post.getTypePost();
+            switch (option) {
+                case 1:
+                    try {
+                        System.out.println("text only.");
+                        db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), null);
+                        msgToUser.setStatus(200);
+                        msgToUser.setMessage("Added post successfully.");
+                        msgToUser.setData(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        msgToUser.setMessage("Error while posting.");
+                        msgToUser.setStatus(500);
+                        msgToUser.setData(false);
+                    }
+                    break;
+                case 2:
+                    try {
+                        System.out.println("Create post with image.");
+                        Part file = request.getPart("upImageFile");
+                        InputStream filecontent = file.getInputStream();
+                        OutputStream output = null;
+                        String dirBase = (System.getenv("SystemDrive") + user_username + "\\" + this.getFileName(file));
+                        String dirWeb = (System.getenv("SystemDrive") + user_username + "/" + this.getFileName(file));
+                        db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), null);
+                        output = new FileOutputStream(dirBase);
+                        int read = 0;
+                        byte[] bytes = new byte[1024];
+                        while ((read = filecontent.read(bytes)) != -1) {
+                            output.write(bytes, 0, read);
+                        }
+                        msgToUser.setStatus(200);
+                        msgToUser.setMessage("Added post successfully.");
+                        msgToUser.setData(2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        msgToUser.setMessage("Error while posting.");
+                        msgToUser.setStatus(500);
+                        msgToUser.setData(false);
+                    }
+                    break;
+                case 3:
+                    try {
+                        System.out.println("Create post with video");
+                        Part file = request.getPart("upVideoFile");
+                        InputStream filecontent = file.getInputStream();
+                        OutputStream output = null;
+                        String dirBase = (System.getenv("SystemDrive") + user_username + "\\" + this.getFileName(file));
+                        String dirWeb = (System.getenv("SystemDrive") + user_username + "/" + this.getFileName(file));
+                        db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), dirWeb);
+                        output = new FileOutputStream(dirBase);
+                        int read = 0;
+                        byte[] bytes = new byte[2048];
+                        while ((read = filecontent.read(bytes)) != -1) {
+                            output.write(bytes, 0, read);
+                        }
+                        msgToUser.setStatus(200);
+                        msgToUser.setMessage("Added post successfully.");
+                        msgToUser.setData(3);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        msgToUser.setMessage("Error while posting.");
+                        msgToUser.setStatus(500);
+                        msgToUser.setData(false);
+                    }
+                    break;
+                default:
+                    System.out.println("Error Case");
+                    msgToUser.setStatus(500);
+                    msgToUser.setMessage("Forbiden. Reload The Page.");
+                    System.out.println(jackson.plainObjToJson(msgToUser));
+                    break;
+            }
+
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(msgToUser);
+
+    }
+
     public String deletePost(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
@@ -142,32 +238,26 @@ public class PostHandler {
 
         Integer postId = Integer.parseInt(request.getParameter("id"));
         ResponseModel msgToUser = new ResponseModel();
-        String resp="";
-          try {
+        try {
             db.update(prpReader.getValue("deletePost"), postId, postId, userId, postId);
             msgToUser.setStatus(200);
             msgToUser.setMessage("Post deleted successfully");
-          } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             msgToUser.setMessage("DB Connection Error");
             msgToUser.setStatus(500);
-          }
+        }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);
-        return resp;  
+        return jackson.plainObjToJson(msgToUser);
     }
 
-    private int getFileCount(String username, int id) {
-        String baseDir = System.getenv("SystemDrive") + "/web2p1/assets/users/" + username + "/" + id + "/";
-        int count;
-        try {
-            File file = new File(baseDir);
-            count = file.listFiles().length;
+    private String getFileName(Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+            }
         }
-        catch(NullPointerException e) { 
-          count = 0; 
-        }
-        return count;
+        return null;
     }
 
 }

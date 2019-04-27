@@ -13,32 +13,30 @@ import utils.SuperMapper;
 
 public class UpdateHandler {
 
-  private DBConnection db;
-  private PropReader prpReader;
-  private SuperMapper jackson;
+    private DBConnection db;
+    private PropReader prpReader;
+    private SuperMapper jackson;
 
-  public String updateUser(HttpServletRequest request) throws SQLException, IOException {
-    prpReader = PropReader.getInstance();
-    db = new DBConnection();
-    jackson = new SuperMapper();
-    String resp;
-    ResponseModel msgToUser = new ResponseModel();
-    try {
-      UserModel userSession = jackson.jsonToPlainObj(request, UserModel.class);
-      java.util.Date birthday = DateDB.getBirthdayFromString(userSession.getBirthday());
-      HttpSession session = request.getSession();
-      session.setAttribute("user", userSession.getUsername());
-      db.update(prpReader.getValue("updateUser"), userSession.getName(), userSession.getLastName(), userSession.getEmail(), birthday, userSession.isSex(), userSession.getUsername());
-      msgToUser.setStatus(200);
-      msgToUser.setMessage("Update Successful");
-      msgToUser.setData(userSession);
-    } catch (Exception e) {
-      e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+    public String updateUser(HttpServletRequest request) throws SQLException, IOException {
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        jackson = new SuperMapper();
+        ResponseModel msgToUser = new ResponseModel();
+        try {
+            UserModel userSession = jackson.jsonToPlainObj(request, UserModel.class);
+            java.util.Date birthday = DateDB.getBirthdayFromString(userSession.getBirthday());
+            HttpSession session = request.getSession();
+            session.setAttribute("user", userSession.getUsername());
+            db.update(prpReader.getValue("updateUser"), userSession.getName(), userSession.getLastName(), userSession.getEmail(), birthday, userSession.isSex(), userSession.getUsername());
+            msgToUser.setStatus(200);
+            msgToUser.setMessage("Update Successful");
+            msgToUser.setData(userSession);
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgToUser.setMessage("DB Connection Error");
+            msgToUser.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(msgToUser);
     }
-    db.closeCon();
-    resp = jackson.plainObjToJson(msgToUser);
-    return resp;
-  }
 }

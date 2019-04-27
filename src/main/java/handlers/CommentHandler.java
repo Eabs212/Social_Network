@@ -23,39 +23,39 @@ import utils.SuperMapper;
  */
 public class CommentHandler {
 
-  private DBConnection db;
-  private PropReader prpReader;
-  private SuperMapper jackson;
-  private ResultSet rs;
-  public String addComment(HttpServletRequest request) throws IOException {
-    jackson = new SuperMapper();
-    prpReader = PropReader.getInstance();
-    db = new DBConnection();
-    CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
-    comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-    ResponseModel msgToUser = new ResponseModel();
-    String resp = "";
-    try {
-      db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getCommentUrl(), comment.getPostId(), comment.getUserId());
-      msgToUser.setStatus(200);
-      msgToUser.setMessage("Comment Done");
-    } catch (Exception e) {
-      e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+    private DBConnection db;
+    private PropReader prpReader;
+    private SuperMapper jackson;
+    private ResultSet rs;
+
+    public String addComment(HttpServletRequest request) throws IOException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
+        comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
+        ResponseModel msgToUser = new ResponseModel();
+        try {
+            db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getCommentUrl(), comment.getPostId(), comment.getUserId());
+            msgToUser.setStatus(200);
+            msgToUser.setMessage("Comment Done");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgToUser.setMessage("DB Connection Error");
+            msgToUser.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(msgToUser);
     }
-    db.closeCon();
-    resp = jackson.plainObjToJson(msgToUser);
-    return resp;
-  }
-     public ArrayList<CommentModel> getComments(int post_id) {
+
+    public ArrayList<CommentModel> getComments(int post_id) {
         ArrayList<CommentModel> comments = new ArrayList<>();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         try {
-          System.out.println(post_id);          
-          rs = db.execute(prpReader.getValue("getComments"), post_id);
-            while(rs.next()) {
+            System.out.println(post_id);
+            rs = db.execute(prpReader.getValue("getComments"), post_id);
+            while (rs.next()) {
                 CommentModel comment = new CommentModel();
                 UserModel user = new UserModel();
                 comment.setData(rs);
@@ -70,32 +70,30 @@ public class CommentHandler {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             db.closeCon();
         }
 
         return comments;
     }
-  public String deleteComment(HttpServletRequest request) throws IOException {
-    jackson = new SuperMapper();
-    prpReader = PropReader.getInstance();
-    db = new DBConnection();
-    CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
-    comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-    ResponseModel msgToUser = new ResponseModel();
-    String resp = "";
-    try {
-      db.update(prpReader.getValue("deleteComment"), comment.getUserId(), comment.getCommentId());
-      msgToUser.setStatus(200);
-      msgToUser.setMessage("Comment Deleted");
-    } catch (Exception e) {
-      e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+
+    public String deleteComment(HttpServletRequest request) throws IOException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
+        comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
+        ResponseModel msgToUser = new ResponseModel();
+        try {
+            db.update(prpReader.getValue("deleteComment"), comment.getUserId(), comment.getCommentId());
+            msgToUser.setStatus(200);
+            msgToUser.setMessage("Comment Deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgToUser.setMessage("DB Connection Error");
+            msgToUser.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(msgToUser);
     }
-    db.closeCon();
-    resp = jackson.plainObjToJson(msgToUser);
-    return resp;
-  }
 }
