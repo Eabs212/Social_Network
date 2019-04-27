@@ -13,39 +13,35 @@ import utils.SuperMapper;
 
 public class RegisterHandler {
 
-  private DBConnection db;
-  private PropReader prpReader;
-  private SuperMapper jackson;
+    private DBConnection db;
+    private PropReader prpReader;
+    private SuperMapper jackson;
 
-  public String insertUser(HttpServletRequest request) throws SQLException, JsonProcessingException {
-    prpReader = PropReader.getInstance();
-    db = new DBConnection();
-    jackson = new SuperMapper();
-    String resp = "";
-    ResponseModel msgToUser = new ResponseModel();
-    System.out.print("Response:" + resp);
-    try {
-      UserModel user = jackson.jsonToPlainObj(request, UserModel.class);
-      java.util.Date birthday = DateDB.getBirthdayFromString(user.getBirthday());
-      boolean isValid = !db.validate(prpReader.getValue("checkUser"), user.getUsername(),user.getEmail());
-                if(isValid){
-                db.update(prpReader.getValue("registerUser"),user.getUsername(),
-                Encrypter.getMD5(user.getPassword()),user.getName(),user.getLastName(),user.getEmail(),birthday,db.currentTimestamp(),
-                user.isSex());
+    public String insertUser(HttpServletRequest request) throws SQLException, JsonProcessingException {
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        jackson = new SuperMapper();
+        ResponseModel msgToUser = new ResponseModel();
+        try {
+            UserModel user = jackson.jsonToPlainObj(request, UserModel.class);
+            java.util.Date birthday = DateDB.getBirthdayFromString(user.getBirthday());
+            boolean isValid = !db.validate(prpReader.getValue("checkUser"), user.getUsername(), user.getEmail());
+            if (isValid) {
+                db.update(prpReader.getValue("registerUser"), user.getUsername(),
+                        Encrypter.getMD5(user.getPassword()), user.getName(), user.getLastName(), user.getEmail(), birthday, db.currentTimestamp(),
+                        user.isSex());
                 msgToUser.setStatus(200);
                 msgToUser.setMessage("Registro exitoso");
-                }
-                else{
+            } else {
                 msgToUser.setStatus(401);
                 msgToUser.setMessage("Usuario o Email ya registrado");
-                }
-      db.closeCon();
-    } catch (Exception e) {
-      e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-			msgToUser.setStatus(500);
+            }
+            db.closeCon();
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgToUser.setMessage("DB Connection Error");
+            msgToUser.setStatus(500);
+        }
+        return jackson.plainObjToJson(msgToUser);
     }
-    resp = jackson.plainObjToJson(msgToUser);
-    return resp;
-  }
 }
