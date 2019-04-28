@@ -53,7 +53,6 @@ public class CommentHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         try {
-            System.out.println(post_id);
             rs = db.execute(prpReader.getValue("getComments"), post_id);
             while (rs.next()) {
                 CommentModel comment = new CommentModel();

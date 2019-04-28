@@ -105,9 +105,6 @@ public class LikeHandler {
                 UserModel user = new UserModel();
                 LikeModel like = new LikeModel();
                 like.setData(rs);
-                System.out.println(rs.toString() + " 1");
-                System.out.println("putras");
-
                 user.setId(like.getUserId());
                 user.setUsername(rs.getString(4));
                 user.setName(rs.getString(5));
