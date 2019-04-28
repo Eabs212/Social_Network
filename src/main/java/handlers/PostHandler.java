@@ -93,8 +93,8 @@ public class PostHandler {
         PostModel post = new PostModel();
         post.setData(rs);
         //SE ANDA TARDANDO DEMASIADO EN TRAERME LOS POST CON LOS LIKES
-        //post.setLikes(likes.getLikes(post.getIdPost()));
-        //post.setComments(comments.getComments(post.getIdPost()));
+        post.setLikes(likes.getLikes(post.getIdPost()));
+        post.setComments(comments.getComments(post.getIdPost()));
         posts.add(post);
       }
       msgToUser.setData(posts);
@@ -124,6 +124,8 @@ public class PostHandler {
     post.setUser(user);
     ResponseModel msgToUser = new ResponseModel();
     Integer option = post.getTypePost();
+    System.out.println(option);
+    System.out.println(post.getPostText());
     switch (option) {
       case 1:
         try {
@@ -247,12 +249,13 @@ public class PostHandler {
     Part file = request.getPart("files[]");
 						InputStream fileContent = file.getInputStream();
 						OutputStream output = null;
+            prpReader = PropReader.getInstance();
 
     try {
-						String dirBase = System.getenv("SystemDrive") + request.getServletContext().getContextPath() + "/assets/users/" + request.getSession(false).getAttribute("user")+ "\\" + this.getFileName(file);
-						String dirWeb = System.getenv("SystemDrive") + request.getServletContext().getContextPath() + "/assets/users/" + request.getSession(false).getAttribute("user")+"/" + this.getFileName(file);
-            String folderDir = System.getenv("SystemDrive") + request.getServletContext().getContextPath() + "/assets/users/" + request.getSession(false).getAttribute("user");
-            createFolder(folderDir);            
+						String dirBase = System.getenv("SystemDrive") + System.getenv("homePath")+ prpReader.getValue("dir") + request.getSession(false).getAttribute("user")+ "\\" + this.getFileName(file);
+						String dirWeb = prpReader.getValue("dirWeb")+ request.getSession(false).getAttribute("user")+"/" + this.getFileName(file);
+            String folderDir = System.getenv("SystemDrive") + System.getenv("homePath")+ prpReader.getValue("dir")  + request.getSession(false).getAttribute("user");
+            createFolder(folderDir);             
             pm.setUrl(dirWeb);
 						output = new FileOutputStream(dirBase);
 						int read = 0;

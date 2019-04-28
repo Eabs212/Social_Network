@@ -105,29 +105,30 @@ public class FileHandler {
   }
 
   public void fileDown(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException, IOException, ServletException {
-    response.setContentType("image/png");
-    response.addHeader("Accept-Ranges", "bytes");
-    String target = System.getenv("SystemDrive");
-    if (request.getParameter("type").equalsIgnoreCase("avatar")) {
-      target += "/web2p1/assets/avatars/";
-    } else if (request.getParameter("type").equalsIgnoreCase("post")) {
-      target += "/web2p1/assets/users/" + request.getSession(false).getAttribute("user") + "/" + request.getParameter("id") + "/";
-    }
-    FileInputStream fileObj = null;
-    OutputStream out = response.getOutputStream();
-    try {
-      fileObj = new FileInputStream(target + request.getParameter("file"));
-      System.out.println("1");
-      response.setHeader("Content-Length", Long.toString(fileObj.getChannel().size()));
-      int read = 0;
-      byte[] bytes = new byte[1024];
-      while ((read = fileObj.read(bytes)) != -1) {
-        out.write(bytes, 0, read);
-      }
-      fileObj.close();
-      out.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+        String fileType = request.getParameter("type");
+        String contentType = "";
+        switch (fileType){
+            case "Image": contentType = "image/*";
+            break;
+            case "Audio": contentType = "audio/*";
+            break;
+            case "Video": contentType = "video/*";
+            break;
+        }
+
+        response.setContentType(contentType);
+
+        String dir = request.getParameter("dir");
+        File my_file = new File(dir);
+
+        OutputStream out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(my_file);
+        byte[] buffer = new byte[4096];
+        int length;
+        while ((length = in.read(buffer)) > 0){
+            out.write(buffer, 0, length);
+        }
+        in.close();
+        out.flush();
+}
 }

@@ -1,4 +1,4 @@
-
+src/main/webapp/assets/*
 .settings/
 target/
 .classpath
