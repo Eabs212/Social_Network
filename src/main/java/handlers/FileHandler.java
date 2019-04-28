@@ -40,7 +40,7 @@ public class FileHandler {
     ResponseModel msgToUser = new ResponseModel();
     String resp = "";
     try {
-      String baseDir = System.getenv("SystemDrive") + "/web2p1/assets/users/" + request.getSession(false).getAttribute("user")
+      String baseDir = System.getenv("SystemDrive") + "/web2file/assets/users/" + request.getSession(false).getAttribute("user")
               + "/" + id + "/";
       int i = 0;
       System.out.println(baseDir);
@@ -81,7 +81,7 @@ public class FileHandler {
     OutputStream out = null;
     File fileObj = null;
     try {
-      String baseDir = System.getenv("SystemDrive") + "/web2p1/assets/avatars/";
+      String baseDir = System.getenv("SystemDrive") + "/web2files/assets/avatars/";
       fileContent = file.getInputStream();
       fileObj = new File(baseDir + request.getSession(false).getAttribute("username") + ".png");
       fileObj.getParentFile().mkdirs();
