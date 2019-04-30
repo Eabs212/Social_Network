@@ -38,9 +38,11 @@ public class FriendServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
     FriendHandler addFriends = new FriendHandler();
     PrintWriter out = response.getWriter();
+    int user1 = Integer.parseInt(request.getParameter("user1"));
+    int user2 = Integer.parseInt(request.getParameter("user2"));    
     try {
       response.setContentType("application/json");
-      String json = addFriends.addFriend(request);
+      String json = addFriends.addFriend(user1, user2);
       out.write(json);
     } catch (SQLException ex) {
       Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);

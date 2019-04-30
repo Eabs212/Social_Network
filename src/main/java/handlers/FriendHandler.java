@@ -27,21 +27,21 @@ public class FriendHandler {
     private SuperMapper jackson;
     private ResultSet rs;
 
-    public String addFriend(HttpServletRequest request) throws SQLException, JsonProcessingException {
+    public String addFriend(int userId, int friendId) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         ResponseModel msgToUser = new ResponseModel();
-        int user1 = Integer.parseInt(request.getParameter("user1"));
-        int user2 = Integer.parseInt(request.getParameter("user2"));
+        //int user1 = Integer.parseInt(request.getParameter("user1"));
+        //int user2 = Integer.parseInt(request.getParameter("user2"));
         try {
-            boolean validate = db.validate(prpReader.getValue("isFriend"), user1, user2);
+            boolean validate = db.validate(prpReader.getValue("isFriend"), userId, friendId);
             System.out.println(validate);
             if (!validate) {
-                db.update(prpReader.getValue("addFriend"), user1, user2, user1, user2);
+                db.update(prpReader.getValue("addFriend"), userId, friendId, userId, friendId);
                 msgToUser.setData(true);
                 msgToUser.setStatus(200);
-                msgToUser.setMessage("New Friend " + user2);
+                msgToUser.setMessage("New Friend " + friendId);
             } else {
                 msgToUser.setData(false);
                 msgToUser.setStatus(401);
@@ -135,4 +135,30 @@ public class FriendHandler {
         db.closeCon();
         return jackson.plainObjToJson(msgToUser);
     }
+        public  String checkFriendRequest(HttpServletRequest request) throws SQLException, JsonProcessingException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();            
+        ResponseModel msgToUser = new ResponseModel();
+        Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        Integer friendId = Integer.parseInt(request.getParameter("id"));
+        try {
+            boolean validate = db.validate(prpReader.getValue("checkFriendReq"), userId, friendId);
+            System.out.println(validate);
+            if (!validate) {
+                msgToUser.setData(true);
+                msgToUser.setStatus(200);
+            } else {
+                msgToUser.setData(false);
+                msgToUser.setStatus(401);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgToUser.setMessage("DB Connection Error");
+            msgToUser.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(msgToUser);
+    }
 }
+
