@@ -1,16 +1,18 @@
 function $(id){
     return document.getElementById(id);
 }
+
 function c(clase){
     return document.getElementsByClassName(clase)
 }
+
 let dataUser = JSON.parse(localStorage.getItem("userInfo"));
 let friends = $('friends');
 
-window.onpageshow = ()=>{
+window.onpageshow = () => {
     let user = $("username");
     user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
-    console.log(dataUser);
+    //console.log(dataUser);
 }
 function out() {
     params={

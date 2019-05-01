@@ -6,62 +6,56 @@
     <link type="text/css" href="../css/material-icons.css" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
-
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-html,body{
-
-margin:0px;
-
-height:100%;
-
-}
-    </style>
-
+	<link rel="stylesheet" href="./../css/user.css">
   </head>
 
-  <body class="black">
+  <body class="light-blue">
     <nav>
       <div class="nav-wrapper grey darken-4">
-        <a href="./../views/dashboard.html" class="brand-logo left">
-            <i class="material-icons">home</i>SocialFire</a>
-            <ul id="nav-mobile" class="right">
-                  <li><a id="username" class="waves-effect waves-light btn red darken-3" href="./../views/profile.html"><i class="material-icons left">account_circle</i>user</a></li>
-                  <li><a id="out" onclick="out()" class="waves-effect waves-light btn red darken-3"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
-                </ul>
+        <a href="./../views/dashboard.html" class="brand-logo left" style="padding-left: 10px;">
+    	   	<i class="material-icons">home</i>SocialForge</a>
+	           	<ul id="nav-mobile" class="right hide-on-med-and-down">
+           	      
+           	      <li><a href="search.html" class="white-text text-darken-4" style="padding-right: 50px;">buscar<i class="material-icons left">search</i></a></li>
+	              <li><a href="#!" class="white-text text-darken-4" style="padding-right: 50px;">notificaciones<i class="material-icons left">error</i></a></li>
+	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">face</i></a></li>
+	              
+            	  <li><a id="username" class="btn light-blue darken-1" href="./../views/profile.html"><i class="material-icons">account_circle</i></a></li>
+                  <li><a id="out" onclick="out()" class="btn red darken-1"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
+	           	</ul>            
       </div>
     </nav>
+    
     <div class="container-fluid" style="max-height: 100vh;">
         <div class="row" style="margin: 0px">
-          <div class="col s3 red" style="max-height: 100vh;">
-              <div id="myPost" class="grey darken-4 white-text" style="border: 1px solid #212121 ;border-radius: 10px;height: 40vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
-                    <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="80%" style="margin-left:10% ">
-                    <p id="Name" style="font-size: 24px;margin: 2%"></p>                      
-                  </div>
-                  <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:55vh;overflow: auto;height: 55vh;">
-                    <div class="collection "style="border: 1px solid #212121 ;border-radius: 10px;height: 28vh;margin-top:20%">
-                      <a href="#!" id="addFriend"class="collection-item grey-text text-darken-4" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">añadir a amigos</a>
-                      
-                    </div>
-                    </div>    
-          </div>
-            <div class="col s9 red" style="max-height:100vh">
-                <div id="myPost" class="input-field" style="border: 1px solid #212121 ;border-radius: 10px;height: 28vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
-                    <h5>Datos</h5>
-                    <p style="font-size: 20px">
-                    <span>Nombre:</span> <span id="name" style="margin-right: 2%"></span>
-                    <span>Apellido:</span> <span id="lastName" style="margin-right: 2%"></span>
-                    <span>Fecha de nacimiento:</span> <span id="birthday" style="margin-right: 2%"></span>
-                    <span>Genero:</span> <span id="gender" style="margin-right: 2%"></span> <br>
-                    <span>Correo:</span> <span id="email" style="margin-right: 2%"></span>
-                    <span>Post:</span> <span id="email" style="margin-right: 2%">1</span>
-                    <span>Amigos:</span> <span id="email" style="margin-right: 2%">2</span>
-                    </p>
-                </div>
-                <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">                    
-                </div>
+        
+        <div class="col s3 light-blue center" style="max-height: 112vh;">
+        	<div id="friendPost" class="grey darken-4 white-text center">
+    	        <img src="../public/default.svg" alt="Avatar image" class="responsive-img circle" width="40%">
+                <p id="sideName" style="font-size:24px; margin:4%;"></p>                      
+                <a href="#!" id="addFriend" class="btn green grey-text text-darken-4" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">+ añadir a amigos</a>
             </div>
+        </div>
+          
+        <div class="col s9 light-blue" style="max-height:100vh">
+            <div id="friendInfo" class="input-field">
+				<h5 id=header></h5>                
+				<p style="font-size: 20px">
+                <span>Nombre:</span> <span id="name" style="margin-right: 2%"></span>
+                <span>Apellido:</span> <span id="lastName" style="margin-right: 2%"></span>
+                <span>Fecha de nacimiento:</span> <span id="birthday" style="margin-right: 2%"></span>
+                <span>Genero:</span> <span id="gender" style="margin-right: 2%"></span> <br>
+                <span>Correo:</span> <span id="email" style="margin-right: 2%"></span>
+                <span>Post:</span> <span id="email" style="margin-right: 2%">1</span>
+                <span>Amigos:</span> <span id="email" style="margin-right: 2%">2</span>
+                </p>
+            </div>
+            <div class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">                    
+            </div>
+        </div>
+            
         </div>
     </div>
 

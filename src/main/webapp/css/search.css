@@ -1,0 +1,17 @@
+#search {
+	padding-left: 2%; 
+	border-radius: 10px; 
+	width: 900px;	
+}
+
+input::placeholder {
+	color: black;
+} 
+
+#result {
+	border: 1px solid #212121; 
+	border-radius: 5px;
+	max-height: 75vh;
+	overflow: auto;
+	height: 73.7vh;
+}
