@@ -10,7 +10,7 @@ window.onload = ()=>{
     let dataUser = JSON.parse(localStorage.getItem("userInfo"));
     user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
     name.value = dataUser.name;
-    lastname.value = dataUser.last_name;
+    lastname.value = dataUser.lastName;
     birthday.value = dataUser.birthday;
     email.value = dataUser.email;
 

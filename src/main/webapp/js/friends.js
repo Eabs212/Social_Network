@@ -7,7 +7,6 @@ function c(clase){
 }
 
 let dataUser = JSON.parse(localStorage.getItem("userInfo"));
-let friends = $('friends');
 
 window.onpageshow = () => {
     let user = $("username");
@@ -46,21 +45,20 @@ function search(value){
             console.log(data.data);
           if (data.data.length>0){
               localStorage.setItem("userFriends",JSON.stringify(data.data));
-              friends.innerHTML = data.data.length;
             data.data.map(element => {
-        
+            let x = new Date(element.creationTime); 
             $("listFriends").innerHTML +=`
-            <div class="red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+            <div class="white" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
             <div style="display:flex">
                 <div style="width: 12%;height: 30%;">
-                    <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="90%" height="80%">
-                    <p>${element.birthday}</p>                      
+                    <img src="../public/default.svg" alt="no cargo" class="responsive-img circle" width="90%" height="80%">
+                    <p>${x.toDateString()}</p>                      
                 </div>
                 <div >
                     <div style="display:flex">
-                    <h5 class="user">${element.name} ${element.lastName}</h5><span id="user" style="padding-left:1%;padding-top: 11%;">${element.username}</span>
+                    <h5 class="user">${element.name} ${element.lastName}</h5><span id="user" style="padding-left:1%;padding-top: 11%;">@${element.username}</span>
                     </div>
-                    <p><span>BD:</span> 11/12/1997</p>
+                    <p><span>Birthday:</span> ${element.birthday}</p>
                 </div>
             </div>
             <div style="display:flex">
@@ -88,11 +86,10 @@ function search(value){
             console.log(data.data);
           if (data.data.length>0){
             let friendsN = JSON.parse(localStorage.getItem("userFriends"));
-            friends.innerHTML = friendsN.length;
             data.data.forEach(element => {
         
             $("listFriends").innerHTML +=`
-            <div class="red" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+            <div class="white" style="border: 1px solid #212121 ;border-radius: 10px;height:auto ;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
             <div style="display:flex">
                 <div style="width: 12%;height: 30%;">
                     <img src="avatar.png" alt="no cargo" class="responsive-img circle" width="90%" height="80%">
@@ -140,7 +137,7 @@ function borrar(value){
 }
 
 
-$('searchFriends').addEventListener('keydown',function(e){
+$('search').addEventListener('keydown',function(e){
     var key = e.keyCode;
     if (key === 13) {
         location.href = "friends.html?op=2&param="+$("searchFriends").value;

@@ -17,7 +17,6 @@ import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -43,17 +42,15 @@ public class PostHandler {
     db = new DBConnection();
     ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
     Integer id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-    Integer postsCount = Integer.parseInt(request.getParameter("posts"));
-    String username = request.getSession(false).getAttribute("user").toString();
+
     CommentHandler comments = new CommentHandler();
     LikeHandler likes = new LikeHandler();
     try {
-      rs = db.execute(prpReader.getValue("getPosts"), id, id, postsCount);
+      rs = db.execute(prpReader.getValue("getPostsWithoutLimit"), id, id );
       while (rs.next()) {
         PostModel post = new PostModel();
         UserModel user = new UserModel();
         post.setData(rs);
-        //post.setFileCount(getFileCount(username, post.getIdPost()));
         user.setUsername(rs.getString(6));
         user.setName(rs.getString(7));
         user.setLastName(rs.getString(8));

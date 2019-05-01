@@ -30,7 +30,7 @@ public class NotificationHandler {
 			while(rs.next()) {
 				NotificationModel not = new NotificationModel();
 				UserModel user = new UserModel();
-                                not.setData(rs);
+        not.setData(rs);
 				if(rs.wasNull()) { not.setNotificationAccepted(null); }
 				not.setTypeNotificationId(rs.getInt(6));
 				user.setUsername(rs.getString(7));

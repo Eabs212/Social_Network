@@ -15,6 +15,7 @@ public class UserModel {
     public void setData(ResultSet rs) throws SQLException{
 	  this.setId(rs.getInt(1));
 		this.setUsername(rs.getString(2));
+		this.setPassword(null);    
 		this.setName(rs.getString(4));
 		this.setLastName(rs.getString(5));
 		this.setEmail(rs.getString(6));
@@ -24,7 +25,6 @@ public class UserModel {
 		this.setTypeId(rs.getInt(10));
 		this.setSex(rs.getBoolean(11));
 		this.setEnabled(rs.getBoolean(12));
-		this.setPassword(null);
     }
 
 

@@ -44,8 +44,11 @@ function search(value){
     				});
 
     			}else{
-    				console.log(1)
-    				alert(data.message+", status("+data.status+")"+"No se encontro coincidencia");
+            $("result").innerHTML +=`
+            <div class="center-align white-text">
+            <h2>No se encontro coincidencia</h2><i class="large material-icons">people</i>
+            </div>
+            ` 
     			}
     		});
     }

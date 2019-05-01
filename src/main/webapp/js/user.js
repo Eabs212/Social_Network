@@ -20,9 +20,8 @@ window.onpageshow = ()=>{
     let gender = $('gender');
     let email = $('email');
     
-    user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
-    sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
-    header.innerHTML ='Perfil de @' + dataUser.username;
+          user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
+
     
     params={
         method: "GET", 
@@ -36,7 +35,8 @@ window.onpageshow = ()=>{
     		if (data.status==200){
     			localStorage.setItem("user",JSON.stringify(data.data));
     			dataUser = data.data;
-
+          sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
+          header.innerHTML ='Perfil de @' + dataUser.username;
     			name.innerHTML = dataUser.name+'<span id="user"></span>';;
     			lastname.innerHTML = dataUser.lastName;
     			birthday.innerHTML = dataUser.birthday;
@@ -57,7 +57,7 @@ window.onpageshow = ()=>{
 }
 
 function add(){
-    let dataUser = JSON.parse(localStorage.getItem("user"));
+    let data = JSON.parse(localStorage.getItem("user"));
 
     let btn = $('addFriend')
     //let user = $('user').innerHTML;

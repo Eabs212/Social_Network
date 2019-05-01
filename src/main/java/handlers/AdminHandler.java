@@ -8,6 +8,7 @@ package handlers;
 import Models.PostModel;
 import Models.ResponseModel;
 import Models.UserModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import java.util.LinkedHashMap;
 import static java.util.Map.Entry.comparingByValue;
 import javax.servlet.http.HttpServletRequest;
 import utils.DBConnection;
+import utils.DateDB;
 import utils.PropReader;
 import utils.SuperMapper;
 
@@ -34,8 +36,9 @@ public class AdminHandler {
     private ResultSet rs;
 
 
-    public ResponseModel<HashMap<String, ArrayList<PostModel>>> postsByType() {
+    public String postsByType() throws JsonProcessingException {
         db = new DBConnection();
+        jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         ResponseModel<HashMap<String, ArrayList<PostModel>>> resp = new ResponseModel<>();
         ArrayList<PostModel> audioPosts = new ArrayList<>();
@@ -45,18 +48,22 @@ public class AdminHandler {
         HashMap<String, ArrayList<PostModel>> typeP = new HashMap<>();
 
         try {
+          System.out.println("1");
             rs = db.execute(prpReader.getValue("getAllPosts"));
+            
             while(rs.next()) {
                 PostModel post = new PostModel();
                 UserModel user = new UserModel();
                 post.setData(rs);
-                user.setUsername(rs.getString(5));
-                user.setName(rs.getString(6));
-                user.setLastName(rs.getString(7));
-                user.setId(rs.getInt(8));
+                user.setUsername(rs.getString(6));
+                user.setName(rs.getString(7));
+                user.setLastName(rs.getString(8));
+                user.setId(rs.getInt(9));
                 post.setLikes(null);
                 post.setComments(null);
                 post.setUser(user);
+                System.out.println("22");
+                System.out.println(post);
                 if(post.getTypePost() == 1) { textPosts.add(post); }
                 if(post.getTypePost() == 2) { imagePosts.add(post); }
                 if(post.getTypePost() == 3) { videoPosts.add(post); }
@@ -68,6 +75,7 @@ public class AdminHandler {
             typeP.put("videoPosts", videoPosts);
             typeP.put("imagePosts", imagePosts);
             resp.setMessage("Stats returned.");
+            System.out.println(typeP);
             resp.setData(typeP);
 
         } catch(SQLException e) {
@@ -75,13 +83,14 @@ public class AdminHandler {
             resp.setMessage("DB Connection Error");
         }
         db.closeCon();
-        return resp;
+        return jackson.plainObjToJson(resp);
     }
 
-    public ResponseModel<HashMap<String, ArrayList<UserModel>>> usersByGenre() {
+    public String usersByGenre() throws JsonProcessingException {
         db = new DBConnection();
+        jackson = new SuperMapper();        
         prpReader = PropReader.getInstance();
-        ResponseModel<HashMap<String, ArrayList<UserModel>>> response = new ResponseModel<>();
+        ResponseModel<HashMap<String, ArrayList<UserModel>>> resp = new ResponseModel<>();
         ArrayList<UserModel> male = new ArrayList<>();
         ArrayList<UserModel> female = new ArrayList<>();
         HashMap<String, ArrayList<UserModel>> userG = new HashMap<>();
@@ -90,21 +99,23 @@ public class AdminHandler {
             while(rs.next()) {
                 UserModel user = new UserModel();
                 user.setData(rs);
+                System.out.println(user.isSex());
                 if(user.isSex()) { male.add(user); }
                 else { female.add(user); }
             }
-            response.setStatus(200);
-            response.setMessage("Stats returned.");
+            System.out.println(male);
+            resp.setStatus(200);
+            resp.setMessage("Stats returned.");
             userG.put("male", male);
             userG.put("female", female);
-            response.setData(userG);
+            resp.setData(userG);
         } catch(SQLException e) {
             e.printStackTrace();
-            response.setStatus(500);
-            response.setMessage("DB Connection Error");
+            resp.setStatus(500);
+            resp.setMessage("DB Connection Error");
         }
         db.closeCon();
-        return response;
+        return jackson.plainObjToJson(resp);
     }
 
     public ResponseModel<LinkedHashMap<String, ArrayList<PostModel>>> usersByPosts() {
@@ -128,11 +139,38 @@ public class AdminHandler {
         return response;
     }
 
-    public  ResponseModel<LinkedHashMap<Integer, ArrayList<UserModel>>> usersByAge() {
+    public  String usersByAge() throws JsonProcessingException {
+        db = new DBConnection();
+        jackson = new SuperMapper();        
+        prpReader = PropReader.getInstance();
         ResponseModel<LinkedHashMap<Integer, ArrayList<UserModel>>> response = new ResponseModel<>();
         LinkedHashMap<Integer, ArrayList<UserModel>> data = new LinkedHashMap<>();
-
-        return response;
+        try {
+            rs = db.execute(prpReader.getValue("getUsersByAge"));
+            while(rs.next()) {
+                UserModel user = new UserModel();
+                user.setData(rs);
+                java.sql.Date birthday = DateDB.getBirthdayFromString(user.getBirthday());
+                
+                int age = Period.between(birthday.toLocalDate(), LocalDate.now()).getYears();
+                if(data.containsKey(age)) {
+                    data.get(age).add(user);
+                }
+                else {
+                    ArrayList<UserModel> users = new ArrayList<>();
+                    users.add(user);
+                    data.put(age, users);
+                }
+            }
+            response.setStatus(200);
+            response.setMessage("Stats Returned");
+            response.setData(data);
+        } catch(SQLException e) {
+            response.setStatus(500);
+            response.setMessage("DB Connection Error");
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(response);
     }
 
     public ResponseModel<ArrayList<PostModel>> postsByLikes() {
@@ -158,8 +196,6 @@ public class AdminHandler {
         jackson = new SuperMapper();
         UserModel user = jackson.jsonToPlainObj(request, UserModel.class);
         ResponseModel resp = new ResponseModel();
-
-
     try {
       db.update(prpReader.getValue("changeUserState"), user.getId(), user.isEnabled());
       resp.setStatus(200);
