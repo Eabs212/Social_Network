@@ -44,11 +44,10 @@ public class NotificationsSocket {
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException, SQLException {
-        ObjectMapper mapper = new ObjectMapper();
+        jackson = new SuperMapper();
         NotificationHandler notification = new NotificationHandler();        
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         System.out.println(message);
-        NotificationModel not = mapper.readValue(message, NotificationModel.class);
+        NotificationModel not = jackson.jsonToPojo(message, NotificationModel.class);
         not = notification.addNotification(not);
         if(not.getNotificationAccepted() != null) {
             notification.setAccepted(not.getNotificationAccepted(), not.getNotificationSender(), not.getNotificationReceiver());
@@ -59,15 +58,15 @@ public class NotificationsSocket {
             session.getBasicRemote().sendText("Friend Added");
             if(wsSessions.get(not.getNotificationReceiver()) != null) {
                 wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText("Friend Added");
-                wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(mapper.writeValueAsString(not));
+                wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(jackson.plainObjToJson(not));
             }
         }
         else if((not.getTypeNotificationId() == 5 || not.getTypeNotificationId() == 1 || not.getTypeNotificationId() == 2
         || not.getTypeNotificationId() == 3) && wsSessions.containsKey(not.getNotificationReceiver())) {
-            wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(mapper.writeValueAsString(not));
+            wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(jackson.plainObjToJson(not));
         }
         this.notifications = notification.getNotifications(id, 20);
-        session.getBasicRemote().sendText("Notifications;" + mapper.writeValueAsString(notifications));
+        session.getBasicRemote().sendText("Notifications;" +jackson.plainObjToJson(notifications));
     }
 
     @OnClose

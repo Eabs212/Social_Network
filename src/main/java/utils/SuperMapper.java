@@ -23,6 +23,9 @@ public class SuperMapper {
   public <T> T jsonToPlainObj(HttpServletRequest request, Class clase) throws IOException{
       return (T) objMap.readValue(request.getReader().lines().collect(Collectors.joining(System.lineSeparator())), clase);
   }
+  public <T> T jsonToPojo(String string, Class clase) throws IOException{
+    return (T) objMap.readValue(string, clase);
+  }
       public <T> String plainObjToJson(T data) throws JsonProcessingException{
         objMap.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return objMap.writerWithDefaultPrettyPrinter().writeValueAsString(data);

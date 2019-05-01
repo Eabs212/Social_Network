@@ -6,69 +6,141 @@
 	},
 	"item": [
 		{
-			"name": "session",
+			"name": "user",
 			"item": [
 				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"username\":\"eabs\",\n\t\"password\":\"210121\"\n}"
+					"name": "account",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"eabs\",\n\t\"password\":\"210121\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"login"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/SocialForge/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"SocialForge",
-								"login"
-							]
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/LogOutServlet?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"LogOutServlet"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "soto",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "logout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:8080/SocialForge/LogOutServlet?",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"SocialForge",
-								"LogOutServlet"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "soto",
-									"disabled": true
+					"name": "friends",
+					"item": [
+						{
+							"name": "isfriend",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "friendReq",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/friendReq?user=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"friendReq"
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "friendList",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		},
@@ -236,7 +308,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "file",
+					"name": "file(no)",
 					"item": [
 						{
 							"name": "fileUp",
@@ -402,6 +474,138 @@
 								{
 									"key": "user",
 									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/SocialForge/dashboard?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"SocialForge",
+								"dashboard"
+							],
+							"query": [
+								{
+									"key": "op",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "stats",
+					"item": [
+						{
+							"name": "userAge",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/admin?op=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"admin"
+									],
+									"query": [
+										{
+											"key": "op",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "userGender",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/admin?op=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"admin"
+									],
+									"query": [
+										{
+											"key": "op",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "typePost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/SocialForge/admin?op=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"SocialForge",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "op",
+									"value": "1"
 								}
 							]
 						}

@@ -18,49 +18,57 @@ import utils.PropReader;
  * @author Hijos
  */
 public class NotificationHandler {
-	private PropReader prpReader;
-        private DBConnection db;
-        private ResultSet rs;        
-	public ArrayList<NotificationModel> getNotifications(int userId, int notCount) {
-		ArrayList<NotificationModel> notifications = new ArrayList<>();
-                prpReader = PropReader.getInstance();
-                db = new DBConnection();
-		try {
-                        rs = db.execute(prpReader.getValue("getNotifications"), userId, notCount);
-			while(rs.next()) {
-				NotificationModel not = new NotificationModel();
-				UserModel user = new UserModel();
+
+  private PropReader prpReader;
+  private DBConnection db;
+  private ResultSet rs;
+
+  public ArrayList<NotificationModel> getNotifications(int userId, int notCount) {
+    ArrayList<NotificationModel> notifications = new ArrayList<>();
+    prpReader = PropReader.getInstance();
+    db = new DBConnection();
+    try {
+      rs = db.execute(prpReader.getValue("getNotifications"), userId, notCount);
+      while (rs.next()) {
+        NotificationModel not = new NotificationModel();
+        UserModel user = new UserModel();
         not.setData(rs);
-				if(rs.wasNull()) { not.setNotificationAccepted(null); }
-				not.setTypeNotificationId(rs.getInt(6));
-				user.setUsername(rs.getString(7));
-				user.setName(rs.getString(8));
-				user.setLastName(rs.getString(9));
-				not.setUser(user);
-				notifications.add(not);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return notifications;
-	}
+        if (rs.wasNull()) {
+          not.setNotificationAccepted(null);
+        }
+        not.setTypeNotificationId(rs.getInt(6));
+        user.setUsername(rs.getString(7));
+        user.setName(rs.getString(8));
+        user.setLastName(rs.getString(9));
+        not.setUser(user);
+        notifications.add(not);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    db.closeCon();
+    return notifications;
+  }
 
-	public NotificationModel addNotification(NotificationModel notification) {
-                prpReader = PropReader.getInstance();
-                db = new DBConnection();
-		try {
-                        rs = db.execute(prpReader.getValue("insertNotification"), notification.getNotificationSender(), notification.getNotificationReceiver(), notification.getTypeNotificationId(), notification.getNotificationAccepted());
-			rs.next();
-			notification.setNotificationId(rs.getInt(1));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return notification;
-	}
+  public NotificationModel addNotification(NotificationModel notification) {
+    prpReader = PropReader.getInstance();
+    db = new DBConnection();
+    try {
+      rs = db.execute(prpReader.getValue("insertNotification"), notification.getNotificationSender(), notification.getNotificationReceiver(), notification.getTypeNotificationId(), notification.getNotificationAccepted());
+      rs.next();
+      notification.setNotificationId(rs.getInt(1));
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    db.closeCon();
+    return notification;
+  }
 
-	public void setAccepted(Boolean accepted, int receiverId, int senderId) {
-                prpReader = PropReader.getInstance();
-                db = new DBConnection();
-                db.update(prpReader.getValue("setAcceptedNotification"), accepted, senderId, receiverId);
-	}
+  public void setAccepted(Boolean accepted, int receiverId, int senderId) {
+    prpReader = PropReader.getInstance();
+    db = new DBConnection();
+    db.update(prpReader.getValue("setAcceptedNotification"), accepted, senderId, receiverId);
+    db.closeCon();
+
+  }
 }

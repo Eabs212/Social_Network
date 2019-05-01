@@ -61,19 +61,19 @@ public class FriendHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         ResponseModel msgToUser = new ResponseModel();
-        int user1 = Integer.parseInt(request.getParameter("user1"));
-        int user2 = Integer.parseInt(request.getParameter("user2"));
+        int user1 = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        int user2 = Integer.parseInt(request.getParameter("user"));
         try {
             boolean validate = db.validate(prpReader.getValue("isFriend"), user1, user2);
             System.out.println(validate);
-            if (!validate) {
+            if (validate) {
                 msgToUser.setData(true);
                 msgToUser.setStatus(200);
-                msgToUser.setMessage("New Friend " + user2);
+                msgToUser.setMessage("Already Friend");
             } else {
                 msgToUser.setData(false);
-                msgToUser.setStatus(401);
-                msgToUser.setMessage("Already Friend");
+                msgToUser.setStatus(200);
+                msgToUser.setMessage("user");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,6 @@ public class FriendHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         ResponseModel msgToUser = new ResponseModel();
-        String resp = "";
         int user1 = Integer.parseInt(request.getParameter("user1"));
         int user2 = Integer.parseInt(request.getParameter("user2"));
         System.out.println(user1 + "-" + user2);
@@ -113,9 +112,7 @@ public class FriendHandler {
         db = new DBConnection();
         ResponseModel msgToUser = new ResponseModel();
         ArrayList<UserModel> friends = new ArrayList<>();
-        String resp = "";
         String username = request.getSession(false).getAttribute("user").toString();
-        //String username = request.getParameter("user");
         System.out.println(username);
         try {
             rs = db.execute(prpReader.getValue("friendList"), username);
@@ -141,11 +138,11 @@ public class FriendHandler {
         db = new DBConnection();            
         ResponseModel msgToUser = new ResponseModel();
         Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-        Integer friendId = Integer.parseInt(request.getParameter("id"));
+        Integer friendId = Integer.parseInt(request.getParameter("user"));
         try {
             boolean validate = db.validate(prpReader.getValue("checkFriendReq"), userId, friendId);
             System.out.println(validate);
-            if (!validate) {
+            if (validate) {
                 msgToUser.setData(true);
                 msgToUser.setStatus(200);
             } else {
