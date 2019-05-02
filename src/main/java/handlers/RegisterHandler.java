@@ -21,7 +21,7 @@ public class RegisterHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         jackson = new SuperMapper();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             UserModel user = jackson.jsonToPlainObj(request, UserModel.class);
             java.util.Date birthday = DateDB.getBirthdayFromString(user.getBirthday());
@@ -30,18 +30,18 @@ public class RegisterHandler {
                 db.update(prpReader.getValue("registerUser"), user.getUsername(),
                         Encrypter.getMD5(user.getPassword()), user.getName(), user.getLastName(), user.getEmail(), birthday, db.currentTimestamp(),
                         user.isSex());
-                msgToUser.setStatus(200);
-                msgToUser.setMessage("Registro exitoso");
+                resp.setStatus(200);
+                resp.setMessage("Registro exitoso");
             } else {
-                msgToUser.setStatus(401);
-                msgToUser.setMessage("Usuario o Email ya registrado");
+                resp.setStatus(401);
+                resp.setMessage("Usuario o Email ya registrado");
             }
             db.closeCon();
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 }

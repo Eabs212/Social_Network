@@ -5,6 +5,7 @@
  */
 package handlers;
 
+import Models.CommentModel;
 import Models.PostModel;
 import Models.ResponseModel;
 import Models.UserModel;
@@ -173,20 +174,9 @@ public class AdminHandler {
         return jackson.plainObjToJson(response);
     }
 
-    public ResponseModel<ArrayList<PostModel>> postsByLikes() {
-        ResponseModel<ArrayList<PostModel>> response = new ResponseModel<>();
-        ArrayList<PostModel> data = new ArrayList<>();
-        HashMap<Integer, Integer> unsorted = new HashMap<>();
-        HashMap<Integer, PostModel> posts = new HashMap<>();
 
 
-        return response;
-    }
-
-    public static ResponseModel<ArrayList<PostModel>> postsByComments() {
-      return null;
-
-    }
+  
 
 
 
@@ -209,16 +199,101 @@ public class AdminHandler {
         return jackson.plainObjToJson(resp);
     }
 
-    public String searchUser(HttpServletRequest request) {
-        return null;
+    public String searchUser(HttpServletRequest request) throws JsonProcessingException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        ResponseModel<ArrayList<UserModel>> resp = new ResponseModel<>();
+        ArrayList<UserModel> users = new ArrayList<>();
+        String search = "%" + request.getParameter("search") + "%";
+        System.out.println(search);
+        try {
+            rs = db.execute(prpReader.getValue("searchUsersAdmin"), search, search, search);
+            while (rs.next()) {
+                UserModel user = new UserModel();
+                user.setData(rs);
+                users.add(user);
+            }
+            resp.setData(users);
+            resp.setMessage("List Returned");
+            resp.setStatus(200);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(resp);
     }
 
-    public String searchPosts(HttpServletRequest request) {
-        return null;
+    public String searchPosts(HttpServletRequest request) throws JsonProcessingException {
+        db = new DBConnection();
+        prpReader = PropReader.getInstance();
+        jackson = new SuperMapper();        
+        ResponseModel<ArrayList<PostModel>> resp = new ResponseModel<>();
+        ArrayList<PostModel> posts = new ArrayList<>();
+        String search = "%" + request.getParameter("search") + "%";
+        System.out.println(search);
+        try {
+            rs = db.execute(prpReader.getValue("getPostsByContent"), search);
+            while (rs.next()) {
+                PostModel post = new PostModel();
+                UserModel user = new UserModel();
+                post.setIdPost(rs.getInt(1));
+                user.setId(rs.getInt(2));
+                post.setTypePost(rs.getInt(3));
+                post.setPostText(rs.getString(4));
+                post.setUrl(rs.getString(5));
+                post.setCreationTime(rs.getTimestamp(6));
+                user.setUsername(rs.getString(7));
+                user.setName(rs.getString(8));
+                user.setLastName(rs.getString(9));
+                user.setAvatar(rs.getString(10));
+                post.setUser(user);
+                posts.add(post);
+            }
+            resp.setData(posts);
+            resp.setMessage("Posts Returned");
+            resp.setStatus(200);
+        } catch(SQLException e) {
+            e.printStackTrace();
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
+        }
+      
+        return jackson.plainObjToJson(resp);
     }
 
-    public String searchComments(HttpServletRequest request) {
-        return null;
+    public String searchComments(HttpServletRequest request) throws JsonProcessingException {
+        db = new DBConnection();
+        prpReader = PropReader.getInstance();
+        jackson = new SuperMapper();        
+        ResponseModel<ArrayList<CommentModel>> resp = new ResponseModel<>();
+        ArrayList<CommentModel> comments = new ArrayList<>();
+        String search = "%" + request.getParameter("search") + "%";
+        try {
+            rs = db.execute(prpReader.getValue("getCommentsByContent"), search);
+            while (rs.next()) {
+                CommentModel comment = new CommentModel();
+                UserModel user = new UserModel();
+                comment.setData(rs);
+                user.setUsername(rs.getString(5));
+                user.setName(rs.getString(6));
+                user.setLastName(rs.getString(7));
+                comment.setUser(user);
+                comments.add(comment);
+            }
+            resp.setStatus(200);
+            resp.setMessage("Comments Returned");
+            resp.setData(comments);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.setStatus(500);
+            resp.setMessage("DB Connection Error");
+        }
+      
+        return jackson.plainObjToJson(resp);      
     }
 
     public String deletePost(HttpServletRequest request) {

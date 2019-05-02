@@ -23,7 +23,7 @@ public class LoginHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         jackson = new SuperMapper();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             UserModel user = jackson.jsonToPlainObj(request, UserModel.class);
             rs = db.execute(prpReader.getValue("loginUser"), user.getUsername(), Encrypter.getMD5(user.getPassword()));
@@ -34,19 +34,19 @@ public class LoginHandler {
                 session.setAttribute("user", user.getUsername());
                 System.out.println(session.getAttribute("user_id").toString());
                 System.out.println(session.getAttribute("user").toString());
-                msgToUser.setStatus(200);
-                msgToUser.setMessage("login Successful");
-                msgToUser.setData(user);
+                resp.setStatus(200);
+                resp.setMessage("login Successful");
+                resp.setData(user);
             } else {
-                msgToUser.setStatus(401);
-                msgToUser.setMessage("User or password incorrect");
+                resp.setStatus(401);
+                resp.setMessage("User or password incorrect");
             }
             db.closeCon();
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 }

@@ -5,8 +5,6 @@
  */
 package sockets;
 import Models.NotificationModel;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import configurators.HttpSessionConfig;
 import handlers.FriendHandler;
 import handlers.NotificationHandler;
@@ -61,8 +59,8 @@ public class NotificationsSocket {
                 wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(jackson.plainObjToJson(not));
             }
         }
-        else if((not.getTypeNotificationId() == 5 || not.getTypeNotificationId() == 1 || not.getTypeNotificationId() == 2
-        || not.getTypeNotificationId() == 3) && wsSessions.containsKey(not.getNotificationReceiver())) {
+        else if((not.getTypeNotificationId() == 1 || not.getTypeNotificationId() == 2 || not.getTypeNotificationId() == 3
+        || not.getTypeNotificationId() == 5) && wsSessions.containsKey(not.getNotificationReceiver())) {
             wsSessions.get(not.getNotificationReceiver()).getBasicRemote().sendText(jackson.plainObjToJson(not));
         }
         this.notifications = notification.getNotifications(id, 20);

@@ -40,7 +40,7 @@ public class PostHandler {
     jackson = new SuperMapper();
     prpReader = PropReader.getInstance();
     db = new DBConnection();
-    ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
+    ResponseModel<ArrayList<PostModel>> resp = new ResponseModel();
     Integer id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
 
     CommentHandler comments = new CommentHandler();
@@ -61,16 +61,16 @@ public class PostHandler {
         post.setUser(user);
         posts.add(post);
       }
-      msgToUser.setData(posts);
-      msgToUser.setMessage("Posts Returned");
-      msgToUser.setStatus(200);
+      resp.setData(posts);
+      resp.setMessage("Posts Returned");
+      resp.setStatus(200);
     } catch (SQLException e) {
       e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+      resp.setMessage("DB Connection Error");
+      resp.setStatus(500);
     }
     db.closeCon();
-    return jackson.plainObjToJson(msgToUser);
+    return jackson.plainObjToJson(resp);
   }
 
   public String getUserPosts(HttpServletRequest request) throws SQLException, JsonProcessingException, IOException {
@@ -81,7 +81,7 @@ public class PostHandler {
     CommentHandler comments = new CommentHandler();
     LikeHandler likes = new LikeHandler();
     Integer userId = Integer.parseInt(request.getParameter("user"));
-    ResponseModel<ArrayList<PostModel>> msgToUser = new ResponseModel();
+    ResponseModel<ArrayList<PostModel>> resp = new ResponseModel();
 
     try {
       rs = db.execute(prpReader.getValue("getUserPosts"), userId);
@@ -94,17 +94,17 @@ public class PostHandler {
         post.setComments(comments.getComments(post.getIdPost()));
         posts.add(post);
       }
-      msgToUser.setData(posts);
-      msgToUser.setMessage("User Posts Returned");
-      msgToUser.setStatus(200);
+      resp.setData(posts);
+      resp.setMessage("User Posts Returned");
+      resp.setStatus(200);
 
     } catch (SQLException e) {
       e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+      resp.setMessage("DB Connection Error");
+      resp.setStatus(500);
     }
     db.closeCon();
-    return jackson.plainObjToJson(msgToUser);
+    return jackson.plainObjToJson(resp);
   }
 //REVISAR BIEN LA RUTA
 
@@ -119,7 +119,7 @@ public class PostHandler {
     post.setPostText(request.getParameter("post_text"));
     //user.setId(Integer.parseInt(request.getParameter("user_id").toString()));
     post.setUser(user);
-    ResponseModel msgToUser = new ResponseModel();
+    ResponseModel resp = new ResponseModel();
     Integer option = post.getTypePost();
     System.out.println(option);
     System.out.println(post.getPostText());
@@ -128,14 +128,14 @@ public class PostHandler {
         try {
           System.out.println("text only.");
           db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), null);
-          msgToUser.setStatus(200);
-          msgToUser.setMessage("Added post successfully.");
-          msgToUser.setData(1);
+          resp.setStatus(200);
+          resp.setMessage("Added post successfully.");
+          resp.setData(1);
         } catch (Exception e) {
           e.printStackTrace();
-          msgToUser.setMessage("Error while posting.");
-          msgToUser.setStatus(500);
-          msgToUser.setData(false);
+          resp.setMessage("Error while posting.");
+          resp.setStatus(500);
+          resp.setData(false);
         }
         break;
       case 2:
@@ -146,19 +146,19 @@ public class PostHandler {
 
           if (bool) {
             db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), post.getUrl());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Added post successfully.");
-            msgToUser.setData(post);
+            resp.setStatus(200);
+            resp.setMessage("Added post successfully.");
+            resp.setData(post);
           } else {
-            msgToUser.setStatus(500);
-            msgToUser.setMessage("Error while posting.");
-            msgToUser.setData(post);
+            resp.setStatus(500);
+            resp.setMessage("Error while posting.");
+            resp.setData(post);
           }
         } catch (Exception e) {
           e.printStackTrace();
-          msgToUser.setMessage("DB error.");
-          msgToUser.setStatus(500);
-          msgToUser.setData(false);
+          resp.setMessage("DB error.");
+          resp.setStatus(500);
+          resp.setData(false);
         }
         break;
       case 3:
@@ -169,19 +169,19 @@ public class PostHandler {
 
           if (bool) {
             db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), post.getUrl());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Added post successfully.");
-            msgToUser.setData(post);
+            resp.setStatus(200);
+            resp.setMessage("Added post successfully.");
+            resp.setData(post);
           } else {
-            msgToUser.setStatus(500);
-            msgToUser.setMessage("Error while posting.");
-            msgToUser.setData(post);
+            resp.setStatus(500);
+            resp.setMessage("Error while posting.");
+            resp.setData(post);
           }
         } catch (Exception e) {
           e.printStackTrace();
-          msgToUser.setMessage("Error while posting.");
-          msgToUser.setStatus(500);
-          msgToUser.setData(false);
+          resp.setMessage("Error while posting.");
+          resp.setStatus(500);
+          resp.setData(false);
         }
         break;
       case 4:
@@ -192,31 +192,31 @@ public class PostHandler {
 
           if (bool) {
             db.update(prpReader.getValue("addPost"), post.getUser().getId(), post.getTypePost(), post.getPostText(), post.getUrl());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Added post successfully.");
-            msgToUser.setData(post);
+            resp.setStatus(200);
+            resp.setMessage("Added post successfully.");
+            resp.setData(post);
           } else {
-            msgToUser.setStatus(500);
-            msgToUser.setMessage("Error while posting.");
-            msgToUser.setData(post);
+            resp.setStatus(500);
+            resp.setMessage("Error while posting.");
+            resp.setData(post);
           }
         } catch (Exception e) {
           e.printStackTrace();
-          msgToUser.setMessage("Error while posting.");
-          msgToUser.setStatus(500);
-          msgToUser.setData(false);
+          resp.setMessage("Error while posting.");
+          resp.setStatus(500);
+          resp.setData(false);
         }
         break;        
       default:
         System.out.println("Error Case");
-        msgToUser.setStatus(500);
-        msgToUser.setMessage("Forbiden. Reload The Page.");
-        System.out.println(jackson.plainObjToJson(msgToUser));
+        resp.setStatus(500);
+        resp.setMessage("Forbiden. Reload The Page.");
+        System.out.println(jackson.plainObjToJson(resp));
         break;
     }
 
     db.closeCon();
-    return jackson.plainObjToJson(msgToUser);
+    return jackson.plainObjToJson(resp);
 
   }
 
@@ -228,18 +228,18 @@ public class PostHandler {
     Integer userId = Integer.parseInt(request.getParameter("user_id"));
 
     Integer postId = Integer.parseInt(request.getParameter("id"));
-    ResponseModel msgToUser = new ResponseModel();
+    ResponseModel resp = new ResponseModel();
     try {
       db.update(prpReader.getValue("deletePost"), postId, postId, userId, postId);
-      msgToUser.setStatus(200);
-      msgToUser.setMessage("Post deleted successfully");
+      resp.setStatus(200);
+      resp.setMessage("Post deleted successfully");
     } catch (Exception e) {
       e.printStackTrace();
-      msgToUser.setMessage("DB Connection Error");
-      msgToUser.setStatus(500);
+      resp.setMessage("DB Connection Error");
+      resp.setStatus(500);
     }
     db.closeCon();
-    return jackson.plainObjToJson(msgToUser);
+    return jackson.plainObjToJson(resp);
   }
 
   private boolean fileUp(HttpServletRequest request, PostModel pm) throws JsonProcessingException, IOException, ServletException {

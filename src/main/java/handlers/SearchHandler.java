@@ -31,7 +31,7 @@ public class SearchHandler {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         ArrayList<UserModel> users = new ArrayList<>();
         String search = "%" + request.getParameter("user") + "%";
         System.out.println(search);
@@ -42,25 +42,24 @@ public class SearchHandler {
                 user.setData(rs);
                 users.add(user);
             }
-            msgToUser.setData(users);
-            msgToUser.setMessage("List Returned");
-            msgToUser.setStatus(200);
+            resp.setData(users);
+            resp.setMessage("List Returned");
+            resp.setStatus(200);
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public String searchFriend(HttpServletRequest request) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         ArrayList<UserModel> users = new ArrayList<>();
-        String resp = "";
         String username = request.getSession(false).getAttribute("user").toString();
         String search = "%" + request.getParameter("param") + "%";
         try {
@@ -70,25 +69,23 @@ public class SearchHandler {
                 user.setData(rs);
                 users.add(user);
             }
-            msgToUser.setData(users);
-            msgToUser.setMessage("List Returned");
-            msgToUser.setStatus(200);
+            resp.setData(users);
+            resp.setMessage("List Returned");
+            resp.setStatus(200);
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);
-        return resp;
+        return jackson.plainObjToJson(resp);
     }
 
     public String getUser(HttpServletRequest request) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
-        String resp = "";
+        ResponseModel resp = new ResponseModel();
         UserModel user = new UserModel();
         String username = request.getParameter("user");
         try {
@@ -96,16 +93,15 @@ public class SearchHandler {
             while (rs.next()) {
                 user.setData(rs);
             }
-            msgToUser.setData(user);
-            msgToUser.setMessage("List Returned");
-            msgToUser.setStatus(200);
+            resp.setData(user);
+            resp.setMessage("List Returned");
+            resp.setStatus(200);
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        resp = jackson.plainObjToJson(msgToUser);
-        return resp;
+        return jackson.plainObjToJson(resp);
     }
 }

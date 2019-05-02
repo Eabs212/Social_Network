@@ -21,22 +21,22 @@ public class UpdateHandler {
         prpReader = PropReader.getInstance();
         db = new DBConnection();
         jackson = new SuperMapper();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             UserModel userSession = jackson.jsonToPlainObj(request, UserModel.class);
             java.util.Date birthday = DateDB.getBirthdayFromString(userSession.getBirthday());
             HttpSession session = request.getSession();
             session.setAttribute("user", userSession.getUsername());
             db.update(prpReader.getValue("updateUser"), userSession.getName(), userSession.getLastName(), userSession.getEmail(), birthday, userSession.isSex(), userSession.getUsername());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Update Successful");
-            msgToUser.setData(userSession);
+            resp.setStatus(200);
+            resp.setMessage("Update Successful");
+            resp.setData(userSession);
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 }

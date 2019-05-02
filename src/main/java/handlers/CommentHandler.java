@@ -34,18 +34,18 @@ public class CommentHandler {
         db = new DBConnection();
         CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
         comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
-            db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getCommentUrl(), comment.getPostId(), comment.getUserId());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Comment Done");
+            db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getPostId(), comment.getUserId());
+            resp.setStatus(200);
+            resp.setMessage("Comment Done");
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public ArrayList<CommentModel> getComments(int post_id) {
@@ -82,17 +82,17 @@ public class CommentHandler {
         db = new DBConnection();
         CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
         comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             db.update(prpReader.getValue("deleteComment"), comment.getUserId(), comment.getCommentId());
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Comment Deleted");
+            resp.setStatus(200);
+            resp.setMessage("Comment Deleted");
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 }

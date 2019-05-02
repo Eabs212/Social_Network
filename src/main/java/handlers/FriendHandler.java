@@ -60,57 +60,57 @@ public class FriendHandler {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         int user1 = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         int user2 = Integer.parseInt(request.getParameter("user"));
         try {
             boolean validate = db.validate(prpReader.getValue("isFriend"), user1, user2);
             System.out.println(validate);
             if (validate) {
-                msgToUser.setData(true);
-                msgToUser.setStatus(200);
-                msgToUser.setMessage("Already Friend");
+                resp.setData(true);
+                resp.setStatus(200);
+                resp.setMessage("Already Friend");
             } else {
-                msgToUser.setData(false);
-                msgToUser.setStatus(200);
-                msgToUser.setMessage("user");
+                resp.setData(false);
+                resp.setStatus(200);
+                resp.setMessage("user");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public String deleteFriend(HttpServletRequest request) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         int user1 = Integer.parseInt(request.getParameter("user1"));
         int user2 = Integer.parseInt(request.getParameter("user2"));
         System.out.println(user1 + "-" + user2);
         try {
             db.update(prpReader.getValue("deleteFriend"), user1, user2, user1, user2);
-            msgToUser.setData(true);
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Friend dismiss");
+            resp.setData(true);
+            resp.setStatus(200);
+            resp.setMessage("Friend dismiss");
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public String friendList(HttpServletRequest request) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         ArrayList<UserModel> friends = new ArrayList<>();
         String username = request.getSession(false).getAttribute("user").toString();
         System.out.println(username);
@@ -121,41 +121,41 @@ public class FriendHandler {
                 user.setData(rs);
                 friends.add(user);
             }
-            msgToUser.setData(friends);
-            msgToUser.setMessage("List Returned");
-            msgToUser.setStatus(200);
+            resp.setData(friends);
+            resp.setMessage("List Returned");
+            resp.setStatus(200);
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
         public  String checkFriendRequest(HttpServletRequest request) throws SQLException, JsonProcessingException {
         jackson = new SuperMapper();
         prpReader = PropReader.getInstance();
         db = new DBConnection();            
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         Integer friendId = Integer.parseInt(request.getParameter("user"));
         try {
             boolean validate = db.validate(prpReader.getValue("checkFriendReq"), userId, friendId);
             System.out.println(validate);
             if (validate) {
-                msgToUser.setData(true);
-                msgToUser.setStatus(200);
+                resp.setData(true);
+                resp.setStatus(200);
             } else {
-                msgToUser.setData(false);
-                msgToUser.setStatus(401);
+                resp.setData(false);
+                resp.setStatus(401);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 }
 

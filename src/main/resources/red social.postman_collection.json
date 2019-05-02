@@ -583,6 +583,114 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "search",
+					"item": [
+						{
+							"name": "searchUsers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/adminSearch?search=emilio&op=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"adminSearch"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "emilio"
+										},
+										{
+											"key": "op",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "searchPosts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/adminSearch?search=asda&op=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"adminSearch"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "asda"
+										},
+										{
+											"key": "op",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "searchComments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/adminSearch?search=asda&op=3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"adminSearch"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "asda"
+										},
+										{
+											"key": "op",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "typePost",
 					"request": {
 						"method": "GET",

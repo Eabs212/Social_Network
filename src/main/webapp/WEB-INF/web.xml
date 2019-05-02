@@ -52,6 +52,10 @@
         <servlet-name>FriendReqServlet</servlet-name>
         <servlet-class>servlets.FriendReqServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminSearchServlet</servlet-name>
+        <servlet-class>servlets.AdminSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>FriendReqServlet</servlet-name>
         <url-pattern>/friendReq</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSearchServlet</servlet-name>
+        <url-pattern>/adminSearch</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

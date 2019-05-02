@@ -35,22 +35,22 @@ public class LikeHandler {
         db = new DBConnection();
         LikeModel like = jackson.jsonToPlainObj(request, LikeModel.class);
         like.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             rs = db.execute(prpReader.getValue("insertLike"), like.getUserId(), like.getPostId(), like.getTypeLikeId());
             if (rs.next()) {
                 like.setData(rs);
-                msgToUser.setStatus(200);
-                msgToUser.setMessage("Post Liked");
-                msgToUser.setData(like);
+                resp.setStatus(200);
+                resp.setMessage("Post Liked");
+                resp.setData(like);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            msgToUser.setStatus(500);
-            msgToUser.setMessage("DB Connection Error");
+            resp.setStatus(500);
+            resp.setMessage("DB Connection Error");
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public String dislikePost(HttpServletRequest request) throws JsonProcessingException {
@@ -59,18 +59,18 @@ public class LikeHandler {
         db = new DBConnection();
         Integer likeId = Integer.parseInt(request.getParameter("likeId"));
         Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             db.update(prpReader.getValue("deleteLike"), userId, likeId);
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Post Disliked");
+            resp.setStatus(200);
+            resp.setMessage("Post Disliked");
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public String updateLike(HttpServletRequest request) throws JsonProcessingException {
@@ -80,18 +80,18 @@ public class LikeHandler {
         Integer likeId = Integer.parseInt(request.getParameter("id"));
         Integer typeLikeId = Integer.parseInt(request.getParameter("type"));
         Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-        ResponseModel msgToUser = new ResponseModel();
+        ResponseModel resp = new ResponseModel();
         try {
             db.update(prpReader.getValue("updateLike"), typeLikeId, userId, likeId);
-            msgToUser.setStatus(200);
-            msgToUser.setMessage("Like Updated");
+            resp.setStatus(200);
+            resp.setMessage("Like Updated");
         } catch (Exception e) {
             e.printStackTrace();
-            msgToUser.setMessage("DB Connection Error");
-            msgToUser.setStatus(500);
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
         }
         db.closeCon();
-        return jackson.plainObjToJson(msgToUser);
+        return jackson.plainObjToJson(resp);
     }
 
     public ArrayList<LikeModel> getLikes(int post_id) throws SQLException, JsonProcessingException, IOException {
