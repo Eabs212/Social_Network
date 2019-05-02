@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1fa9d280-c2e9-47f6-b9a2-734898f9c855",
+		"_postman_id": "4ec0234c-43cd-4f04-977d-5daa48a0da22",
 		"name": "red social",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -553,6 +553,66 @@
 					"item": [
 						{
 							"name": "userAge",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/admin?op=3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"admin"
+									],
+									"query": [
+										{
+											"key": "op",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "userFriends",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:8080/SocialForge/admin?op=4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"admin"
+									],
+									"query": [
+										{
+											"key": "op",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "userPosts",
 							"request": {
 								"method": "GET",
 								"header": [],

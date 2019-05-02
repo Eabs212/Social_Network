@@ -51,6 +51,14 @@ public class AdminServlet extends HttpServlet {
         json = admin.usersByAge();
         out.write(json);
         break;
+      case "4":
+        json = admin.usersByFriends();
+        out.write(json);
+        break; 
+      case "5":
+        json = admin.usersByPosts();
+        out.write(json);
+        break;         
       default:
         out.write("error");
     }

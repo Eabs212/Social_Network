@@ -119,36 +119,78 @@ public class AdminHandler {
         return jackson.plainObjToJson(resp);
     }
 
-    public ResponseModel<LinkedHashMap<String, ArrayList<PostModel>>> usersByPosts() {
+    public String usersByPosts() throws JsonProcessingException {
         db = new DBConnection();
-        prpReader = PropReader.getInstance();      
-        ResponseModel<LinkedHashMap<String, ArrayList<PostModel>>> response = new ResponseModel<>();
-        HashMap<String, ArrayList<PostModel>> map = new HashMap<>();
-        HashMap<String, Integer> quantity = new HashMap<>();
-        LinkedHashMap<String, ArrayList<PostModel>> data = new LinkedHashMap<>();
-
-        return response;
-    }
-
-    public  String usersByFriends() throws JsonProcessingException {
-        ResponseModel<HashMap<String, Integer>> response = new ResponseModel<>();
-        HashMap<String, ArrayList<UserModel>> resp = new HashMap<>();
-        HashMap<String, Integer> quantity = new HashMap<>();
+        jackson = new SuperMapper();        
+        prpReader = PropReader.getInstance();        
+        ResponseModel<HashMap<Integer, ArrayList<UserModel>>> response = new ResponseModel<>();
+        HashMap<Integer, ArrayList<UserModel>> data = new HashMap<>();
         try {
-            rs = db.execute(prpReader.getValue("getUsersByAge"));
+            rs = db.execute(prpReader.getValue("getUsersByPost"));
             while(rs.next()) {
                 UserModel user = new UserModel();
                 user.setId(rs.getInt(1));
                 user.setUsername(rs.getString(2));
                 user.setName(rs.getString(3));
                 user.setLastName(rs.getString(4));
-                quantity.put("user", rs.getInt(5));
-                
+                int quantity = rs.getInt(5);
+                user.setTypeId(rs.getInt(6));
+                user.setSex(rs.getBoolean(7));
+                user.setEnabled(rs.getBoolean(7));
+                System.out.println(quantity);
+                if(data.containsKey(quantity)) {
+                    data.get(quantity).add(user);
+                }
+                else {
+                    ArrayList<UserModel> users = new ArrayList<>();
+                    users.add(user);
+                    data.put(quantity, users);
+                }
 
             }
             response.setStatus(200);
             response.setMessage("Stats Returned");
-            response.setData(quantity);
+            response.setData(data);
+        } catch(SQLException e) {
+            response.setStatus(500);
+            response.setMessage("DB Connection Error");
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(response);
+    }
+
+    public  String usersByFriends() throws JsonProcessingException {
+        db = new DBConnection();
+        jackson = new SuperMapper();        
+        prpReader = PropReader.getInstance();        
+        ResponseModel<HashMap<Integer, ArrayList<UserModel>>> response = new ResponseModel<>();
+        HashMap<Integer, ArrayList<UserModel>> data = new HashMap<>();
+        try {
+            rs = db.execute(prpReader.getValue("getUsersByFriends"));
+            while(rs.next()) {
+                UserModel user = new UserModel();
+                user.setId(rs.getInt(5));
+                user.setUsername(rs.getString(2));
+                user.setName(rs.getString(3));
+                user.setLastName(rs.getString(4));
+                int quantity = rs.getInt(1);    
+                System.out.println(quantity);
+                user.setTypeId(rs.getInt(6));
+                user.setSex(rs.getBoolean(7));
+                user.setEnabled(rs.getBoolean(7));                
+                if(data.containsKey(quantity)) {
+                    data.get(quantity).add(user);
+                }
+                else {
+                    ArrayList<UserModel> users = new ArrayList<>();
+                    users.add(user);
+                    data.put(quantity, users);
+                }
+
+            }
+            response.setStatus(200);
+            response.setMessage("Stats Returned");
+            response.setData(data);
         } catch(SQLException e) {
             response.setStatus(500);
             response.setMessage("DB Connection Error");
@@ -266,6 +308,9 @@ public class AdminHandler {
                 user.setName(rs.getString(8));
                 user.setLastName(rs.getString(9));
                 user.setAvatar(rs.getString(10));
+                user.setTypeId(rs.getInt(11));
+                user.setSex(rs.getBoolean(12));
+                user.setEnabled(rs.getBoolean(13));                 
                 post.setUser(user);
                 posts.add(post);
             }
@@ -297,6 +342,9 @@ public class AdminHandler {
                 user.setUsername(rs.getString(5));
                 user.setName(rs.getString(6));
                 user.setLastName(rs.getString(7));
+                user.setTypeId(rs.getInt(8));
+                user.setSex(rs.getBoolean(9));
+                user.setEnabled(rs.getBoolean(10));                 
                 comment.setUser(user);
                 comments.add(comment);
             }
