@@ -9,8 +9,10 @@ function c(clase){
 window.onpageshow = ()=>{
     let user = $("username");
     let Name = $('name');
+    let profilePic = $('profilePic');    
     user.innerHTML = '<i class="material-icons left">account_circle</i>' + dataUser.username;
-    Name.innerHTML =dataUser.name+'<span id="user" style="font-size: 20px;color: grey;padding-left:3%">@'+  dataUser.username+'</span>';
+    Name.innerHTML = dataUser.name+'<span id="user" style="font-size: 20px;color: grey;padding-left:3%">@'+  dataUser.username+'</span>';
+    profilePic.setAttribute("src", dataUser.avatar); 
         console.log(dataUser);
 }
 function out() {

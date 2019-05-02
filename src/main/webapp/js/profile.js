@@ -17,6 +17,7 @@ window.onpageshow = ()=>{
     let birthday = $('birthday');
     let gender = $('gender');
     let email = $('email');
+    let profilePic = $('profilePic');
     
     user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
     sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
@@ -25,6 +26,7 @@ window.onpageshow = ()=>{
     name.innerText = dataUser.name;
     lastname.innerHTML = dataUser.lastName;
     birthday.innerHTML = dataUser.birthday;
+    profilePic.setAttribute("src", dataUser.avatar); 
     
     if(dataUser.sex == true){
     	gender.innerHTML = "Masculino"

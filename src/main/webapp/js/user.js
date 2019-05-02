@@ -6,9 +6,9 @@ function c(clase){
     return document.getElementsByClassName(clase)
 }
 
-let dataUser = JSON.parse(localStorage.getItem("userInfo"));
+let myData = JSON.parse(localStorage.getItem("userInfo"));
 let x = location.href.split('?')[1];
-
+let dataUser;
 window.onpageshow = ()=>{
 	let user = $("username");
 	let sideName = $('sideName');
@@ -19,15 +19,17 @@ window.onpageshow = ()=>{
     let birthday = $('birthday');
     let gender = $('gender');
     let email = $('email');
+    let profilePic = $('profilePic');
     
-          user.innerHTML = '<i class="material-icons left">account_circle</i>'+ dataUser.username;
+          user.innerHTML = '<i class="material-icons left">account_circle</i>'+ myData.username;
 
     
     params={
         method: "GET", 
         headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'}), 
     }
-    
+        let btn = $('addFriend')
+
     fetch("./../search?"+x, params)
     .then(resp => resp.json())
     	.then(data => {
@@ -35,12 +37,13 @@ window.onpageshow = ()=>{
     		if (data.status==200){
     			localStorage.setItem("user",JSON.stringify(data.data));
     			dataUser = data.data;
-          sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
-          header.innerHTML ='Perfil de @' + dataUser.username;
+                      if(dataUser.id != myData.id){  
+                        sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
+                        header.innerHTML ='Perfil de @' + dataUser.username;
     			name.innerHTML = dataUser.name+'<span id="user"></span>';;
     			lastname.innerHTML = dataUser.lastName;
     			birthday.innerHTML = dataUser.birthday;
-    
+                        profilePic.setAttribute("src", dataUser.avatar); 
     			if(dataUser.sex == true){
     				gender.innerHTML = "Masculino"
     			} else {
@@ -49,11 +52,45 @@ window.onpageshow = ()=>{
     
     			email.innerHTML = dataUser.email;
     			console.log(dataUser);
-       
+                    }else{
+                        sideName.innerHTML = dataUser.name+'<span id="sideUser" style="font-size: 20px;color: grey;padding-left:3%">@'+ dataUser.username+'</span>';
+                        header.innerHTML ='Perfil de @' + dataUser.username;
+    			name.innerHTML = dataUser.name+'<span id="user"></span>';;
+    			lastname.innerHTML = dataUser.lastName;
+    			birthday.innerHTML = dataUser.birthday;
+                        profilePic.setAttribute("src", dataUser.avatar);
+                        btn.innerHTML = "editar";                        
+                        btn.removeAttribute('id');
+    			if(dataUser.sex == true){
+    				gender.innerHTML = "Masculino"
+    			} else {
+    				gender.innerHTML = "Femenino"
+    			}                        
+                    }
     		} else {
     			alert(data.message+", status("+data.status+")");
     		}
     	});
+}
+function chechState(){
+    let data = JSON.parse(localStorage.getItem("user"));
+    let btn = $('addFriend')
+    
+    params = {
+      method: "GET",
+      headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'}), 
+    };
+    fetch("./../isFriend?user="+data.id, params)
+    .then(resp => resp.json())
+    	.then(data => {
+    		console.log(data);
+    		if (data.status==200){
+    			btn.setAttribute('disabled', "true") ;
+                        btn.innerHTML = "Ya son amigos";
+    		} else {
+    			alert(data.message+", status("+data.status+")");
+    		}
+    	});    
 }
 
 function add(){
@@ -66,7 +103,7 @@ function add(){
         headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'}), 
     }
     
-    fetch("./../friend?user1="+data.id+"&user2="+dataUser.id, params)
+    fetch("./../friend?user1="+data.id+"&user2="+myData.id, params)
     .then(resp => resp.json())
     	.then(data => {
     		console.log(data);
@@ -100,3 +137,4 @@ function out() {
 			}
 		});
 }
+chechState();
