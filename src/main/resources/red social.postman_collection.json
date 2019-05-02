@@ -292,14 +292,30 @@
 						{
 							"name": "deleteComment",
 							"request": {
-								"method": "GET",
-								"header": [],
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": ""
+									"raw": "{\"postId\":\"2\",\n\"userId\":\"7\"}"
 								},
 								"url": {
-									"raw": ""
+									"raw": "http://localhost:8080/SocialForge/comments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"SocialForge",
+										"comments"
+									]
 								}
 							},
 							"response": []
@@ -445,7 +461,23 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:8080/SocialForge/post?id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"SocialForge",
+								"post"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "ID DEL POST"
+								}
+							]
 						}
 					},
 					"response": []
@@ -714,6 +746,82 @@
 								{
 									"key": "op",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"postId\":\"2\",\n\"userId\":\"7\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/SocialForge/admin?op=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"SocialForge",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "op",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePost",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/SocialForge/admin?op=1&user_id=7&id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"SocialForge",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "op",
+									"value": "1"
+								},
+								{
+									"key": "user_id",
+									"value": "7"
+								},
+								{
+									"key": "id",
+									"value": "2",
+									"description": "id del post"
 								}
 							]
 						}

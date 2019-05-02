@@ -224,9 +224,7 @@ public class PostHandler {
     jackson = new SuperMapper();
     prpReader = PropReader.getInstance();
     db = new DBConnection();
-    //Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-    Integer userId = Integer.parseInt(request.getParameter("user_id"));
-
+    Integer userId = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
     Integer postId = Integer.parseInt(request.getParameter("id"));
     ResponseModel resp = new ResponseModel();
     try {

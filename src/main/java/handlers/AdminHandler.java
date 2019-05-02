@@ -130,14 +130,31 @@ public class AdminHandler {
         return response;
     }
 
-    public static ResponseModel<LinkedHashMap<String, ArrayList<UserModel>>> usersByFriends() {
-        ResponseModel<LinkedHashMap<String, ArrayList<UserModel>>> response = new ResponseModel<>();
-        HashMap<String, ArrayList<UserModel>> map = new HashMap<>();
+    public  String usersByFriends() throws JsonProcessingException {
+        ResponseModel<HashMap<String, Integer>> response = new ResponseModel<>();
+        HashMap<String, ArrayList<UserModel>> resp = new HashMap<>();
         HashMap<String, Integer> quantity = new HashMap<>();
-        LinkedHashMap<String, ArrayList<UserModel>> data = new LinkedHashMap<>();
+        try {
+            rs = db.execute(prpReader.getValue("getUsersByAge"));
+            while(rs.next()) {
+                UserModel user = new UserModel();
+                user.setId(rs.getInt(1));
+                user.setUsername(rs.getString(2));
+                user.setName(rs.getString(3));
+                user.setLastName(rs.getString(4));
+                quantity.put("user", rs.getInt(5));
+                
 
-
-        return response;
+            }
+            response.setStatus(200);
+            response.setMessage("Stats Returned");
+            response.setData(quantity);
+        } catch(SQLException e) {
+            response.setStatus(500);
+            response.setMessage("DB Connection Error");
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(response);
     }
 
     public  String usersByAge() throws JsonProcessingException {
@@ -296,15 +313,45 @@ public class AdminHandler {
         return jackson.plainObjToJson(resp);      
     }
 
-    public String deletePost(HttpServletRequest request) {
-      return null;
- //copiar lo mismo de postHandler
+    public String deletePost(HttpServletRequest request) throws JsonProcessingException {
+    jackson = new SuperMapper();
+    prpReader = PropReader.getInstance();
+    db = new DBConnection();
+    Integer userId = Integer.parseInt(request.getParameter("user_id"));
+    Integer postId = Integer.parseInt(request.getParameter("id"));
+    ResponseModel resp = new ResponseModel();
+    try {
+      db.update(prpReader.getValue("deletePost"), postId, postId, userId, postId);
+      resp.setStatus(200);
+      resp.setMessage("Post deleted successfully");
+    } catch (Exception e) {
+      e.printStackTrace();
+      resp.setMessage("DB Connection Error");
+      resp.setStatus(500);
+    }
+    db.closeCon();
+    return jackson.plainObjToJson(resp);
     }
 
-    public String deleteComment(HttpServletRequest request) {
-      return null;
- //copiar lo mismo de commentHandler
+    public String deleteComment(HttpServletRequest request) throws IOException {
+        jackson = new SuperMapper();
+        prpReader = PropReader.getInstance();
+        db = new DBConnection();
+        CommentModel comment = jackson.jsonToPlainObj(request, CommentModel.class);
+        ResponseModel resp = new ResponseModel();
+        try {
+            db.update(prpReader.getValue("deleteComment"), comment.getUserId(), comment.getCommentId());
+            resp.setStatus(200);
+            resp.setMessage("Comment Deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setMessage("DB Connection Error");
+            resp.setStatus(500);
+        }
+        db.closeCon();
+        return jackson.plainObjToJson(resp);
     }
+    
 
 
 }

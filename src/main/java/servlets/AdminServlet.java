@@ -56,6 +56,27 @@ public class AdminServlet extends HttpServlet {
     }
 
   }
+    @Override
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    AdminHandler adminDelete = new AdminHandler();
+    PrintWriter out = response.getWriter();
+    response.setContentType("application/json");
+    String op = request.getParameter("op");
+    System.out.println(op);
+    String json;
+    switch(op){
+      case "1":
+        json = adminDelete.deletePost(request);
+        out.write(json);
+        break;
+      case "2":
+        json = adminDelete.deleteComment(request);
+        out.write(json);
+        break;
+      default:
+        out.write("error");
+    }   
+  }
 }
 
 
