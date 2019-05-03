@@ -63,6 +63,7 @@ public class CommentHandler {
                 user.setUsername(rs.getString(5));
                 user.setName(rs.getString(6));
                 user.setLastName(rs.getString(7));
+                user.setAvatar(rs.getString(8));
                 comment.setUser(user);
 
                 comments.add(comment);
