@@ -39,6 +39,7 @@ public class CommentHandler {
             db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getPostId(), comment.getUserId());
             resp.setStatus(200);
             resp.setMessage("Comment Done");
+
         } catch (Exception e) {
             e.printStackTrace();
             resp.setMessage("DB Connection Error");
