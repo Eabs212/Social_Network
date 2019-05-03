@@ -9,8 +9,9 @@ function login() {
     params={
         method: "POST", 
         headers: new Headers({'Content-Type': 'application/json'}), 
-        body:JSON.stringify(data) 
-}
+        body:JSON.stringify(data)
+    }
+    
 fetch("./../login", params)
 .then(resp => resp.json())
 .then(data => {

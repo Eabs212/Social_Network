@@ -6,6 +6,10 @@ function c(clase){
     return document.getElementsByClassName(clase)
 }
 
+window.onload = function(){
+	chechState();
+}
+
 let myData = JSON.parse(localStorage.getItem("userInfo"));
 let x = location.href.split('?')[1];
 let dataUser;
@@ -83,8 +87,8 @@ function chechState(){
     fetch("./../isFriend?user="+data.id, params)
     .then(resp => resp.json())
     	.then(data => {
-    		console.log(data);
-    		if (data.status==200){
+    		console.log(data.data);
+    		if (data.data == true){
     			btn.setAttribute('disabled', "true") ;
                         btn.innerHTML = "Ya son amigos";
     		} else {
@@ -137,4 +141,3 @@ function out() {
 			}
 		});
 }
-chechState();

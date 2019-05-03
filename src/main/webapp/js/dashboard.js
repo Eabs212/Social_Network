@@ -13,8 +13,248 @@ window.onpageshow = ()=>{
     user.innerHTML = '<i class="material-icons left">account_circle</i>' + dataUser.username;
     Name.innerHTML = dataUser.name+'<span id="user" style="font-size: 20px;color: grey;padding-left:3%">@'+  dataUser.username+'</span>';
     profilePic.setAttribute("src", dataUser.avatar); 
-        console.log(dataUser);
 }
+
+window.onload = function(){
+	getPosts();
+}
+
+function getPosts() {
+	params = {
+	        method: 'GET',
+	        headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'})
+	    }
+
+	fetch('./../dashboard', params)
+		.then(response => response.json())
+	    .then(data => {
+	    	let posts = data.data;
+	    	console.log(posts)
+	    	
+	    	if(posts.length > 0) {
+	    		posts.map(element => {
+	    			let op = element.typePost;
+	    			let likes = element.likes.length;
+	    			switch(op){
+	    				case 1:
+	    					$('feed').innerHTML += `
+	    		    			<br><br>
+	    		    			<div id="post-container" class="light-blue">
+		    		    			<div id="post" class="white center">
+	    								<div style="display:flex">
+	    									<div style="margin-left:2%">
+	    										<img src="${element.user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center">${element.user.username}</h5>
+	    									</div>
+	    									<div style="margin-left:18%">
+	    										<h4>${element.postText}</h4>
+	    									</div>
+	    									<div style="margin-left:25%">
+	    										<p>Creado el: ${element.creationTime}</p>
+	    										<h5 class="like">Likes: ${likes}</h5>
+	    									</div> 
+	    								</div>
+		    						</div>
+		    					
+	    						<div class="divider grey darken-4"></div>
+	    						<div id="comment-section" class="grey darken-4 col s12 row">
+	    							<div id="comments-container" class="grey darken-4 col s10 row border-radius: 10px;"></div>
+	    							<br>
+	    							<textarea class="materialize-textarea white" placeholder="comenta algo" id="text-coment" cols="20" rows="10"></textarea>
+	    							<a href="" class="btn right grey darken-2" style="width:25%; margin-right:5.4%;">comment</a>
+	    						</div>
+	    						<a href="" class="btn red darken-4" style="width: 25%; margin-left:50px">dislike</a>
+	    						<a href="" class="btn green darken-4" style="width: 25%; margin-left:400px">like</a>
+	    					</div>`
+	    						
+	    					if(element.comments.length > 0) {
+	    						let position = 0;
+	    						element.comments.forEach((comment) => {
+	    							$('comments-container').innerHTML += `
+	    								<br>
+	    	    						<div style="display: flex">
+	    	    							<div style="margin-left:2%">
+	    										<img src="${element.comments[position].user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center" style="color:white">${element.comments[position].user.name}</h5>
+	    									</div>
+	    	    							<p class="white" style="margin-left:8%; border-radius:5px; padding:1%">${element.comments[position].commentText}</p>
+    	    							</div>
+    	    							<hr>`
+	    							position++;
+	    						});
+	    					}
+	    					
+	    					break;
+
+	    				case 2: 
+	    					$('feed').innerHTML += `
+	    		    			<br><br>
+	    		    			<div id="post-container" class="light-blue">
+		    		    			<div id="post" class="white center">
+	    								<div style="display:flex">
+	    									<div style="margin-left:2%">
+	    										<img src="${element.user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center">${element.user.username}</h5>
+	    									</div>
+	    									<div style="margin-left:18%">
+	    										<h4>${element.postText}</h4>
+	    									</div>
+	    									<div style="margin-left:25%">
+	    										<p>Creado el: ${element.creationTime}</p>
+	    										<h5 class="like">Likes: ${likes}</h5>
+	    									</div>
+	    								</div>	  
+										<div style="margin: 1%">
+											<img class="materialboxed" src="${element.url}" alt="asd" width="20%" height="30%" style="margin-left:40%">
+										</div>  								
+		    						</div>
+		    					
+	    						<div class="divider grey darken-4"></div>
+	    						<div id="comment-section" class="grey darken-4 col s12 row">
+	    							<div id="img-comments-container" class="grey darken-4 col s10 row border-radius: 10px;"></div>
+	    							<br>
+	    							<textarea class="materialize-textarea white" placeholder="comenta algo" id="text-coment" cols="20" rows="10"></textarea>
+	    							<a href="" class="btn right grey darken-2" style="width:25%; margin-right:5.4%;">comment</a>
+	    						</div>
+	    						<a href="" class="btn red darken-4" style="width: 25%; margin-left:50px">dislike</a>
+	    						<a href="" class="btn green darken-4" style="width: 25%; margin-left:400px">like</a>
+	    					</div>`
+	    						
+	    					if(element.comments.length > 0) {
+	    						let position = 0;
+	    						element.comments.forEach((comment) => {
+	    							$('img-comments-container').innerHTML += `
+	    								<br>
+	    	    						<div style="display: flex">
+	    	    							<div style="margin-left:2%">
+	    										<img src="${element.comments[position].user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center" style="color:white">${element.comments[position].user.name}</h5>
+	    									</div>
+	    	    							<p class="white" style="margin-left:8%; border-radius:5px; padding:1%">${element.comments[position].commentText}</p>
+    	    							</div>
+    	    							<hr>`
+	    							position++;
+	    						});
+	    					}
+	    					break;
+	    					
+	    				case 3:
+	    					$('feed').innerHTML += `
+	    		    			<br><br>
+	    		    			<div id="post-container" class="light-blue">
+		    		    			<div id="post" class="white center">
+	    								<div style="display:flex">
+	    									<div style="margin-left:2%">
+	    										<img src="${element.user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center">${element.user.username}</h5>
+	    									</div>
+	    									<div style="margin-left:18%">
+	    										<h4>${element.postText}</h4>
+	    									</div>
+	    									<div style="margin-left:25%">
+	    										<p>Creado el: ${element.creationTime}</p>
+	    										<h5 class="like">Likes: ${likes}</h5>
+	    									</div>
+	    								</div>	  
+										<div style="margin: 1%">
+	    									<video class="responsive-video" width="55%" height="65%" style="margin-left:25%" controls>
+	    										<source src="${element.url}" type="video/mp4">
+	    									</video>
+	    								</div>								
+		    						</div>
+		    					
+	    						<div class="divider grey darken-4"></div>
+	    						<div id="comment-section" class="grey darken-4 col s12 row">
+	    							<div id="vid-comments-container" class="grey darken-4 col s10 row border-radius: 10px;"></div>
+	    							<br>
+	    							<textarea class="materialize-textarea white" placeholder="comenta algo" id="text-coment" cols="20" rows="10"></textarea>
+	    							<a href="" class="btn right grey darken-2" style="width:25%; margin-right:5.4%;">comment</a>
+	    						</div>
+	    						<a href="" class="btn red darken-4" style="width: 25%; margin-left:50px">dislike</a>
+	    						<a href="" class="btn green darken-4" style="width: 25%; margin-left:400px">like</a>
+	    					</div>`
+	    						
+	    					if(element.comments.length > 0) {
+	    						let position = 0;
+	    						element.comments.forEach((comment) => {
+	    							$('vid-comments-container').innerHTML += `
+	    								<br>
+	    	    						<div style="display: flex">
+	    	    							<div style="margin-left:2%">
+	    										<img src="${element.comments[position].user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center" style="color:white">${element.comments[position].user.name}</h5>
+	    									</div>
+	    	    							<p class="white" style="margin-left:8%; border-radius:5px; padding:1%">${element.comments[position].commentText}</p>
+    	    							</div>
+    	    							<hr>`
+	    							position++;
+	    						});
+	    					}
+	    					break;
+	    				case 4: 
+	    					$('feed').innerHTML += `
+	    		    			<br><br>
+	    		    			<div id="post-container" class="light-blue">
+		    		    			<div id="post" class="white center">
+	    								<div style="display:flex">
+	    									<div style="margin-left:2%">
+	    										<img src="${element.user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center">${element.user.username}</h5>
+	    									</div>
+	    									<div style="margin-left:18%">
+	    										<h4>${element.postText}</h4>
+	    									</div>
+	    									<div style="margin-left:25%">
+	    										<p>Creado el: ${element.creationTime}</p>
+	    										<h5 class="like">Likes: ${likes}</h5>
+	    									</div>
+	    								</div>	  
+										<div style="margin: 1%;align-content: center">
+	    									<audio src="${element.url}" style="margin-left:25%;width:50%" controls></audio>
+	    								</div>							
+		    						</div>
+		    					
+	    						<div class="divider grey darken-4"></div>
+	    						<div id="comment-section" class="grey darken-4 col s12 row">
+	    							<div id="mp3-comments-container" class="grey darken-4 col s10 row border-radius: 10px;"></div>
+	    							<br>
+	    							<textarea class="materialize-textarea white" placeholder="comenta algo" id="text-coment" cols="20" rows="10"></textarea>
+	    							<a href="" class="btn right grey darken-2" style="width:25%; margin-right:5.4%;">comment</a>
+	    						</div>
+	    						<a href="" class="btn red darken-4" style="width: 25%; margin-left:50px">dislike</a>
+	    						<a href="" class="btn green darken-4" style="width: 25%; margin-left:400px">like</a>
+	    					</div>`
+	    						
+	    					if(element.comments.length > 0) {
+	    						let position = 0;
+	    						element.comments.forEach((comment) => {
+	    							$('mp3-comments-container').innerHTML += `
+	    								<br>
+	    	    						<div style="display: flex">
+	    	    							<div style="margin-left:2%">
+	    										<img src="${element.comments[position].user.avatar}" alt="profile img" class="responsive-img circle" width="90%" height="80%">
+	    										<h5 class="center" style="color:white">${element.comments[position].user.name}</h5>
+	    									</div>
+	    	    							<p class="white" style="margin-left:8%; border-radius:5px; padding:1%">${element.comments[position].commentText}</p>
+    	    							</div>
+    	    							<hr>`
+	    							position++;
+	    						});
+	    					}
+	    				default:
+	    					$('feed').innerHTML += `lol`
+	    			} // End of switch
+	    		}) // End of map
+	    	} else {
+	    		$("feed").innerHTML +=`
+	            	<div class="center-align white-text">
+	            		<h2>Parece que no tienes nada que ver</h2>
+	            	</div>`
+	    	}
+	    }) // End of .then
+	    .catch(error => console.error(error))
+}
+
 function out() {
     params={
         method: "POST", 
@@ -186,6 +426,3 @@ $('sendVideo').addEventListener('click', ()=>{
 $('sendAudio').addEventListener('click', ()=>{
     postAudio();
 })
-/*window.onload = ()=>{
-    myPost();
-}*/
