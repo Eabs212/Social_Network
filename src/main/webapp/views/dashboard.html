@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./../css/dashboard.css">
   </head>
 
-  <body class="light-blue darken-1">
+  <body class="black">
     <nav>
       <div class="nav-wrapper grey darken-4">
         <a href="./../views/dashboard.html" class="brand-logo left" style="padding-left: 10px;">
@@ -19,8 +19,8 @@
 	           	<ul id="nav-mobile" class="right hide-on-med-and-down">
            	      <li><a href="search.html" class="white-text text-darken-4" style="padding-right: 50px;">buscar<i class="material-icons left">search</i></a></li>
 	              <li><a href="#!" class="white-text text-darken-4" style="padding-right: 50px;">notificaciones<i class="material-icons left">error</i></a></li>
-	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">face</i></a></li>
-            	  <li><a id="username" class="btn light-blue darken-1" href="./../views/profile.html"><i class="material-icons">account_circle</i></a></li>
+	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">people_outline</i></a></li>
+            	  <li><a id="username" class="btn light-blue darken-2" href="./../views/profile.html"><i class="material-icons">account_circle</i></a></li>
                   <li><a id="out" onclick="out()" class="btn red darken-1"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
 	           	</ul>            
       </div>
@@ -29,7 +29,7 @@
     <div class="container-fluid" style="max-height: 112vh;">
       <div class="row" style="margin: 0px">
       	
-      	<div class="col s3 light-blue darken-1" style="max-height: 112vh;">
+      	<div class="col s3 black" style="max-height: 112vh;">
         	<div id="myPost" class="grey darken-4 white-text center">
     	        <img id="profilePic" alt="Avatar image" class="responsive-img circle" width="40%">
                 <p id="name" style="font-size: 24px;margin: 4%;"></p>                      
@@ -37,11 +37,11 @@
             </div>
         </div>
             
-         <div class="col s9 light-blue darken-1" style="max-height:112vh">
-         	<div id="myPost" class="input-field light-blue" style="border: 1px solid #212121 ;border-radius: 10px;height: 40vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
+         <div class="col s9 black darken-1" style="max-height:112vh">
+         	<div id="myPost" class="input-field grey darken-4" style="border: 1px solid #212121 ;border-radius: 10px;height: 40vh;padding: 1%;margin-bottom: 2%;margin-top: 2% ">
             	<div class="row">
                 	<div class="col s12">
-                    	<ul class="tabs grey darken-4">
+                    	<ul class="tabs grey darken-4 grey-text">
                         	<li class="tab col s3"><a href="#test1">Photo post</a></li>
                             <li class="tab col s3"><a class="active" href="#test2">Text post</a></li>
                             <li class="tab col s3"><a href="#test3">video post</a></li>
@@ -52,8 +52,8 @@
                     <div id="test1" class="col s12">
                     	<form action="#">
                         	<div class="file-field input-field">
-	                            <div class="btn grey darken-4">
-	                            	<span>Image</span>
+	                            <div class="btn light-blue darken-2">
+	                            	<span> <i class="material-icons right">wallpaper</i>Image</span>
 	                            	<input type="file" id="image-file" accept="image/*">
 	                            </div>
 	                            <div class="file-path-wrapper">
@@ -66,23 +66,23 @@
                         </form>
                         
                         <div style="display: flex">
-                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-image" style="margin-top: 2%;width: 62vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
-                            <a id="sendImage" class="btn right grey darken-4" style="height: 45px;padding-bottom: 4.5px;margin-top: 2%;padding-top: 4.5px;margin-left: 2%">post</a>
+                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-image" style="margin-top: 2%;width: 60vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
+                            <a id="sendImage" class="btn right light-blue darken-2" style="height: 45px;padding-bottom: 4.5px;margin-top: 2%;padding-top: 4.5px;margin-left: 2%"><i class="material-icons right">send</i>post</a>
                         </div>
                     </div>
                         
                     <div id="test2" class="col s12">
                     	<div style="display:flex;height: 90%;">
-                        	<div><textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-post" style="margin-top: 2%;width: 68vw;margin-left: 2%;overflow: auto;height: 110px;border: 1px solid #212121; border-radius: 10px; color: black"></textarea></div>
+                        	<div><textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-post" style="margin-top: 2%;width: 68vw;margin-left: 2%;overflow: auto;height: 110px;border: 1px solid #212121; border-radius: 10px; color: black;max-height: 17vh"data-length="220"></textarea></div>
                         </div>
-                        <a id="send" class="btn right grey darken-4" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px; margin-right: 3%;">post</a>
+                        <a id="send" class="btn right light-blue darken-2" style="margin: 0.5%;height: 45px;padding-bottom: 4.5px;padding-top: 4.5px; margin-right: 3%;"><i class="material-icons right">send</i>post</a>
                     </div>
                         
                     <div id="test3" class="col s12">
                     	<form action="#">
                         	<div class="file-field input-field">
-                            	<div class="btn grey darken-4">
-                                	<span>video</span>
+                            	<div class="btn light-blue darken-2">
+                                	<span><i class="material-icons right">ondemand_video</i>video</span>
                                     <input type="file" id="video-file" accept="video/*">
                                 </div>
                                 <div class="file-path-wrapper">
@@ -94,16 +94,16 @@
                             </div>
                         </form>
                         <div style="display: flex">
-                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-video" style="margin-top: 2%;width: 62vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
-                            <a id="sendVideo" class="btn right grey darken-4" style="height: 45px;padding-bottom: 4.5px;padding-top: 4.5px;margin-top: 2%;margin-left: 2%">post</a>
+                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-video" style="margin-top: 2%;width: 60vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
+                            <a id="sendVideo" class="btn right light-blue darken-2" style="height: 45px;padding-bottom: 4.5px;padding-top: 4.5px;margin-top: 2%;margin-left: 2%"><i class="material-icons right">send</i>post</a>
                         </div>
                     </div>
                         
                     <div id="test4" class="col s12" style="display: flex ;">
                     	<form action="#">
                         	<div class="file-field input-field">
-                            	<div class="btn grey darken-4">
-                                	<span>Audio</span>
+                            	<div class="btn light-blue darken-2">
+                                	<span><i class="material-icons right">music_video</i>Audio</span>
                                 	<input type="file" id="audio-file" accept="audio/*">
                                 </div>
                                 <div class="file-path-wrapper">
@@ -116,15 +116,15 @@
                         </form>
                         
                         <div style="display: flex">
-                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-audio" style="margin-top: 2%;width: 62vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
-							<a id="sendAudio" class="btn right grey darken-4" style="height: 45px;padding-bottom: 4.5px;margin-top: 2%;padding-top: 4.5px;margin-left: 2%">post</a>
+                        	<textarea class="materialize-textarea white" placeholder="What Are You Thinking?" id="text-audio" style="margin-top: 2%;width: 60vw;margin-left: 2%;overflow: auto;border: 1px solid #212121; color: black"></textarea>
+							<a id="sendAudio" class="btn right light-blue darken-2" style="height: 45px;padding-bottom: 4.5px;margin-top: 2%;padding-top: 4.5px;margin-left: 2%"><i class="material-icons right">send</i>post</a>
                         </div>
                     </div>
                 </div>
                 
             </div>
             
-            <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">
+            <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:100vh;overflow: auto;height: 100vh;">
             </div>
             
 	</div>
@@ -138,7 +138,7 @@
     	var el = document.querySelectorAll('.tabs');
   		var instance = M.Tabs.init(el, {});
     		var elems = document.querySelectorAll('.materialboxed');
-    		var instances = M.Materialbox.init(elems, {});
+    		M.Materialbox.init(elems, {});
     </script>
   </body>
 </html>                              

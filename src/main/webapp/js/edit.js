@@ -39,8 +39,8 @@ fetch("./../update", params)
       localStorage.setItem("userInfo",JSON.stringify(data.data));
       location.href = "./../views/profile.html";
   }else{
-      alert(data.message+", status("+data.status+")");
-  }
+    M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+}
 });
 }
 function out() {
@@ -53,11 +53,11 @@ fetch("./../LogOutServlet", params)
 .then(data => {
     console.log(data);
   if (data.status==200){
-      alert(data.message+", status("+data.status+")");
-      location.href = "./../";
+	M.toast({html: 'Bye!',completeCallback:window.location.href = "./../",inDuration:500,outDuration:500})
+
   }else{
-      alert(data.message+", status("+data.status+")");
-  }
+    M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+}
 });
 }
 document.addEventListener('DOMContentLoaded', function() {

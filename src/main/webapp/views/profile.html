@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="./../css/profile.css">
 </head>
 
-<body class="light-blue">
+<body class="black">
   <nav>
       <div class="nav-wrapper grey darken-4">
         <a href="./../views/dashboard.html" class="brand-logo left" style="padding-left: 10px;">
@@ -19,7 +19,7 @@
 	           	<ul id="nav-mobile" class="right hide-on-med-and-down">
            	      <li><a href="search.html" class="white-text text-darken-4" style="padding-right: 50px;">buscar<i class="material-icons left">search</i></a></li>
 	              <li><a href="#!" class="white-text text-darken-4" style="padding-right: 50px;">notificaciones<i class="material-icons left">error</i></a></li>
-	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">face</i></a></li>
+	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">people_outline</i></a></li>
             	  <li><a id="username" class="btn light-blue darken-1" href="./../views/profile.html"><i class="material-icons">account_circle</i></a></li>
                   <li><a id="out" onclick="out()" class="btn red darken-1"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
 	           	</ul>            
@@ -29,7 +29,7 @@
   <div class="container-fluid" style="max-height: 112vh;">
       <div class="row" style="margin: 0px">
         
-        <div class="col s3 light-blue center" style="max-height: 112vh;">
+        <div class="col s3 black center" style="max-height: 112vh;">
         	<div id="myPost" class="grey darken-4 white-text center">
     	        <img id="profilePic" alt="Avatar image" class="responsive-img circle" width="40%">
                 <p id="sideName" style="font-size:24px; margin:4%;"></p>                      
@@ -37,7 +37,7 @@
             </div>
         </div>
                    
-          <div class="col s9 light-blue" style="max-height:100vh">
+          <div class="col s9 black" style="max-height:100vh">
               
               <div id="myInfo" class="input-field">
                   <h5 id=header></h5>
@@ -47,11 +47,11 @@
                   <span>Fecha de nacimiento:</span> <span id="birthday" style="margin-right: 2%"></span>
                   <span>Genero:</span> <span id="gender" style="margin-right: 2%"></span> <br>
                   <span>Correo:</span> <span id="email" style="margin-right: 2%"></span>
-                  <span>Post:</span> <span id="post" style="margin-right: 2%"></span>
+                  <span>Post:</span> <span id="postN" style="margin-right: 2%"></span>
                   </p>
               </div>
               
-              <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:65vh;overflow: auto;height: 63vh;">                    
+              <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:100vh;overflow: auto;height: 100vh;">                    
               </div>
           </div>
           

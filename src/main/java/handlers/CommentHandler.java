@@ -36,10 +36,18 @@ public class CommentHandler {
         comment.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
         ResponseModel resp = new ResponseModel();
         try {
-            db.update(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getPostId(), comment.getUserId());
-            resp.setStatus(200);
-            resp.setMessage("Comment Done");
-
+          rs = db.execute(prpReader.getValue("insertComment"), comment.getCommentText(), comment.getPostId(), comment.getUserId());
+            if (rs.next()) {
+                comment.setCommentId(rs.getInt(1));
+                comment.setCommentText(rs.getString(2));
+                comment.setCommentUrl(rs.getString(3));
+                comment.setUserId(rs.getInt(4));
+                comment.setUserId(rs.getInt(5));                                
+                System.out.println("ASDSA");
+                resp.setStatus(200);
+                resp.setMessage("Post comment");
+                resp.setData(comment);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             resp.setMessage("DB Connection Error");
@@ -70,11 +78,8 @@ public class CommentHandler {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
-        } finally {
-            db.closeCon();
-        }
-
+            return null;}
+        db.closeCon();
         return comments;
     }
 

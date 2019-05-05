@@ -14,9 +14,48 @@
 	 padding: 1%;
 	 margin-bottom: 2%;
 	 margin-top: 2%;
+	 background-color: #212121;
+	 color: #fff;
+
  }
  
  #config {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
  }
+ #post{
+	border: 1px solid #212121; 
+	border-radius: 10px; 
+	height: auto; 
+	padding:1%; 
+	margin-bottom:2%; 
+	margin-top:2%; 
+	width: auto;
+}
+
+#post-container {
+	border: 1px solid #212121;
+	border-radius: 10px;
+	height:auto;
+	padding: 1%;
+	margin-bottom: 2%;
+	margin-top: 2%; 
+}
+
+#comment-section {
+   border: 1px solid #212121; 
+   border-radius: 5px;
+   max-height:25vh;
+   overflow: auto;
+   height: 25vh;
+}
+
+#text-comment{
+	width: 60vw;
+	margin-left: 2%;
+	overflow: auto;
+	height: 60px;
+	border: 1px solid #212121; 
+	border-radius: 10px; 
+	color: black;
+}

@@ -5,7 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<input type="text" id="message" />
+	<input type="number" id="message" />
 	<button onclick="sendMessage()">SEND</button>
 	<button onclick='connect()'>Connect</button>
 	<button onclick='closeWs()'>Disconnect</button>
@@ -20,7 +20,8 @@
 		var ws;
 
 		function sendMessage() {
-			var text = $("message").value;
+			var text =parseInt( $("message").value);
+			
 			ws.send(text);
 		};
 		function closeWs() {
@@ -36,6 +37,7 @@
 
 			ws.onopen = function(e) {
 				$("inbox").textContent = '\n Conection Success';
+				
 			};
 
 			ws.onclose = function(e) {

@@ -24,8 +24,8 @@ fetch("./../register", params)
   if (data.status==200){
       location.href = "./../views/login.html";
   }else{
-    alert(data.message+", status("+data.status+")");
-  }
+    M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+}
 });
 }
 document.addEventListener('DOMContentLoaded', function() {

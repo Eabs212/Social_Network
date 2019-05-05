@@ -37,15 +37,20 @@ public class LikeHandler {
         like.setUserId(Integer.parseInt(request.getSession(false).getAttribute("user_id").toString()));
         ResponseModel resp = new ResponseModel();
         try {
-          System.out.println("aaawww");
-            rs = db.execute(prpReader.getValue("insertLike"), like.getUserId(), like.getPostId(), like.getTypeLikeId());
+          boolean isliked = db.validate(prpReader.getValue("isLiked"), like.getUserId(), like.getPostId(), like.getTypeLikeId());
+          System.out.println(isliked);
+          if(!isliked){
+          rs = db.execute(prpReader.getValue("insertLike"), like.getUserId(), like.getPostId(), like.getTypeLikeId());
             if (rs.next()) {
                 like.setData(rs);
                 System.out.println("ASDSA");
                 resp.setStatus(200);
                 resp.setMessage("Post Liked");
                 resp.setData(like);
-            }
+            }}else{
+                resp.setStatus(201);
+                resp.setMessage("Already Liked");
+          }
         } catch (SQLException e) {
             e.printStackTrace();
             resp.setStatus(500);
@@ -117,6 +122,7 @@ public class LikeHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        db.closeCon();
         return likes;
     }
 }

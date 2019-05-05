@@ -45,12 +45,13 @@ public class DBConnection {
     return this.rs;
   }
   
-    public boolean validate(String query,Object param1,Object param2) throws SQLException {
+    public boolean validate(String query,Object... values) throws SQLException {
     try {
       this.validate_pstm = this.con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       
-      this.validate_pstm.setObject(1, param1);
-      this.validate_pstm.setObject(2, param2);
+      for (int i = 0; i < values.length; i++) {
+        this.validate_pstm.setObject(i + 1, values[i]);
+      }
       
       this.rs = this.validate_pstm.executeQuery();
       this.valid_user = this.rs.next();

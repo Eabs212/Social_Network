@@ -23,11 +23,11 @@ fetch("./../LogOutServlet", params)
 .then(data => {
     console.log(data);
   if (data.status==200){
-      alert(data.message+", status("+data.status+")");
-      location.href = "./../";
+	M.toast({html: 'Bye!',completeCallback:window.location.href = "./../",inDuration:500,outDuration:500})
+
   }else{
-      alert(data.message+", status("+data.status+")");
-  }
+    M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+}
 });
 }
 
@@ -127,11 +127,11 @@ function borrar(value){
 .then(data => {
     console.log(data);
     if (data.status==200){
-        alert(data.message+", status("+data.status+")");
-        location.reload();
+        M.toast({html: 'Friend dismiss!',completeCallback:window.location.reload(),inDuration:500,outDuration:500})
+        
         }else{
-        alert(data.message+", status("+data.status+")");
-    }
+            M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+        }
 });
 
 }

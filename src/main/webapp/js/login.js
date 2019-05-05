@@ -20,7 +20,8 @@ fetch("./../login", params)
       localStorage.setItem("userInfo",JSON.stringify(data.data));
       location.href = "./../views/dashboard.html";
   }else{
-      alert(data.message+", status("+data.status+")");
+      M.toast({html: data.message+", status("+data.status+")",inDuration:500,outDuration:500})
+
   }
 });
 }
