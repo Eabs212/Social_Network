@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<input type="number" id="message" />
+	<button onclick="sendMessage()">SEND</button>
+	<button onclick='connect()'>Connect</button>
+	<button onclick='closeWs()'>Disconnect</button>
+
+	<h3>MESSAGES:</h3>
+	<div id="inbox"></div>
+
+	<script>
+		function $(id) {
+			return document.getElementById(id);
+		};
+		var ws;
+
+		function sendMessage() {
+			var text =parseInt( $("message").value);
+			
+			ws.send(text);
+		};
+		function closeWs() {
+			ws.close();
+		};
+		function connect() {
+			ws = new WebSocket("ws://" + location.host
+					+ "/SocialForge/notifications");
+			ws.onmessage = function(e) {
+				console.log(JSON.parse(e.data));
+				$("inbox").textContent += '\n' + JSON.parse(e.data).msg;
+			};
+
+			ws.onopen = function(e) {
+				$("inbox").textContent = '\n Conection Success';
+				
+			};
+
+			ws.onclose = function(e) {
+				if (ws.readyState === WebSocket.OPEN) {
+					$("inbox").textContent = '\n Connection Finished';
+					ws.close();
+				}
+			};
+			ws.onerror = function(e) {
+				$("inbox").textContent += '\n' +e.data;
+			};
+
+		};
+	</script>
+</body>
+</html>

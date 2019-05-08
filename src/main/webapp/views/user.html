@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <!--Import Google Icon Font-->
+    <link type="text/css" href="../css/material-icons.css" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" href="./../css/user.css">
+  </head>
+
+  <body class="black">
+    <nav>
+      <div class="nav-wrapper grey darken-4">
+        <a href="./../views/dashboard.html" class="brand-logo left" style="padding-left: 10px;">
+    	   	<i class="material-icons">home</i>SocialForge</a>
+	           	<ul id="nav-mobile" class="right hide-on-med-and-down">
+           	      
+           	      <li><a href="search.html" class="white-text text-darken-4" style="padding-right: 50px;">buscar<i class="material-icons left">search</i></a></li>
+	              <li><a href="#!" class="white-text text-darken-4" style="padding-right: 50px;">notificaciones<i class="material-icons left">error</i></a></li>
+	              <li><a href="friends.html" class="white-text text-darken-4" style="padding-right: 350px;">amigos<i class="material-icons left">people_outline</i></a></li>
+	              
+            	  <li><a id="username" class="btn light-blue darken-1" href="./../views/profile.html"><i class="material-icons">account_circle</i></a></li>
+                  <li><a id="out" onclick="out()" class="btn red darken-1"> <i class="material-icons right">exit_to_app</i>Log out</a></li>
+	           	</ul>            
+      </div>
+    </nav>
+    
+    <div class="container-fluid" style="max-height: 100vh;">
+        <div class="row" style="margin: 0px">
+        
+        <div class="col s3 black center" style="max-height: 112vh;">
+        	<div id="friendPost" class="grey darken-4 white-text center">
+    	        <img id="profilePic" alt="Avatar image" class="responsive-img circle" width="40%">
+                <p id="sideName" style="font-size:24px; margin:4%;"></p>                      
+                <a href="#!" id="addFriend" class="btn green grey-text text-darken-4" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">+ añadir a amigos</a>
+            </div>
+        </div>
+          
+        <div class="col s9 black" style="max-height:100vh">
+            <div id="friendInfo" class="input-field">
+				<h5 id=header></h5>                
+				<p style="font-size: 20px">
+                <span>Nombre:</span> <span id="name" style="margin-right: 2%"></span>
+                <span>Apellido:</span> <span id="lastName" style="margin-right: 2%"></span>
+                <span>Fecha de nacimiento:</span> <span id="birthday" style="margin-right: 2%"></span>
+                <span>Genero:</span> <span id="gender" style="margin-right: 2%"></span> <br>
+                <span>Correo:</span> <span id="email" style="margin-right: 2%"></span>
+                <span>Post:</span> <span id="postN" style="margin-right: 2%"></span>
+                </p>
+            </div>
+            <div id="feed" class="grey darken-4 col s12 row" style="border: 1px solid #212121; border-radius: 5px;max-height:100vh;overflow: auto;height: 100vh;">                    
+            </div>
+        </div>
+            
+        </div>
+    </div>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+    <script type="text/javascript" src="../js/user.js"></script>
+  </body>
+</html>                              
